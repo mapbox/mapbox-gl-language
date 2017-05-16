@@ -1,10 +1,11 @@
 
 /**
  * Create a new [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that
- * highlights a feature when hovering over it.
+ * modifies the layers of the map style to use the 'text-field' that matches the browser language.
  * @constructor
  * @param {object} options - Options to configure the plugin.
- * @param {string} options.layer - Layer to highlight when hovering over
+ * @param {string[]} [options.supportedLanguages] - List of supported languages
+ * @param {string} [options.defaultLanguageField] - The default language field to use
  */
 function MapboxBrowserLanguage(options) {
   if (!(this instanceof MapboxBrowserLanguage)) {

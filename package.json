@@ -1,5 +1,5 @@
 {
-  "name": "mapbox-gl-browser-language",
+  "name": "@mapbox/mapbox-gl-browser-language",
   "version": "1.0.1",
   "description": "Mapbox GL JS plugin for switching language to the browser language.",
   "main": "index.js",
