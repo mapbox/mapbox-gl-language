@@ -20,8 +20,41 @@ function MapboxBrowserLanguage(options) {
   }, options);
 }
 
-function isNameField(field) {
-  return typeof field === 'string' && field.startsWith('{name');
+function isNameStringField(property) {
+  return typeof property === 'string' && property.startsWith('{name');
+}
+
+function isNameFunctionField(property) {
+  return property.stops && property.stops.filter(function (stop) {
+    return stop[1].startsWith('{name');
+  }).length > 0;
+}
+
+function adaptPropertyLanguage(property, languageFieldName) {
+  if (isNameStringField(property)) return languageFieldName;
+  if (isNameFunctionField(property)) {
+    const newStops = property.stops.map(function (stop) {
+      if (stop[1].startsWith('{name')) {
+        return [stop[0], languageFieldName];
+      }
+      return stop;
+    });
+    return Object.assign({}, property, {
+      stops: newStops
+    });
+  }
+  return property;
+}
+
+function changeLayerTextProperty(layer, languageFieldName) {
+  if (layer.layout && layer.layout['text-field']) {
+    return Object.assign({}, layer, {
+      layout: Object.assign({}, layer.layout, {
+        'text-field': adaptPropertyLanguage(layer.layout['text-field'], languageFieldName)
+      })
+    });
+  }
+  return layer;
 }
 
 /**
@@ -32,14 +65,7 @@ MapboxBrowserLanguage.prototype.changeLanguage = function (style) {
   var field = this.options.getLanguageField();
 
   var changedLayers = style.layers.map(function (layer) {
-    if (layer.layout && layer.layout['text-field'] && isNameField(layer.layout['text-field'])) {
-      return Object.assign({}, layer, {
-        layout: Object.assign({}, layer.layout, {
-          'text-field': field
-        })
-      });
-    }
-    return layer;
+    return changeLayerTextProperty(layer, field);
   });
 
   var languageStyle = Object.assign({}, style, {
