@@ -5,19 +5,16 @@
  * @constructor
  * @param {object} options - Options to configure the plugin.
  * @param {string[]} [options.supportedLanguages] - List of supported languages
- * @param {string} [options.getLanguageField] - Function that returns the language field to use based on the browser language.
  */
 function MapboxBrowserLanguage(options) {
+  options = Object.assign({}, options);
   if (!(this instanceof MapboxBrowserLanguage)) {
     throw new Error('MapboxBrowserLanguage needs to be called with the new keyword');
   }
 
-  this.changeLanguage = this.changeLanguage.bind(this);
+  this.setLanguage = this.setLanguage.bind(this);
   this._updateStyle = this._updateStyle.bind(this);
-
-  this.options = Object.assign({
-    getLanguageField: browserLanguageField.bind(null, options.supportedLanguages || ['en', 'es', 'fr', 'de', 'ru', 'zh', 'ar', 'pt'])
-  }, options);
+  this.supportedLanguages = options.supportedLanguages || ['en', 'es', 'fr', 'de', 'ru', 'zh', 'ar', 'pt'];
 }
 
 function isNameStringField(property) {
@@ -66,14 +63,15 @@ function findStreetsSource(style) {
 }
 
 /**
- * Change the language field for a style.
- * @param {object} style - Mapbox GL style
+ * Explicitly change the language for a style.
+ * @param {object} style - Mapbox GL style to modify
+ * @param {string} language - The language iso code
  */
-MapboxBrowserLanguage.prototype.changeLanguage = function (style) {
-  var field = this.options.getLanguageField();
+MapboxBrowserLanguage.prototype.setLanguage = function (style, language) {
   var streetsSource = findStreetsSource(style);
   if (!streetsSource) return style;
 
+  var field = '{name_' + language + '}';
   var changedLayers = style.layers.map(function (layer) {
     if (layer.source === streetsSource) return changeLayerTextProperty(layer, field);
     return layer;
@@ -87,7 +85,7 @@ MapboxBrowserLanguage.prototype.changeLanguage = function (style) {
 
 MapboxBrowserLanguage.prototype._updateStyle = function () {
   var style = this._map.getStyle();
-  this._map.setStyle(this.changeLanguage(style));
+  this._map.setStyle(this.setLanguage(style, browserLanguageField(this.supportedLanguages)));
 };
 
 function browserLanguageField(supportedLanguages) {

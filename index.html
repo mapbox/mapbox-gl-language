@@ -4,8 +4,8 @@
     <meta charset='utf-8' />
     <title>Mapbox GL Browser Language</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.31.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.31.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.34.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.34.0/mapbox-gl.css' rel='stylesheet' />
     <script src='dist/mapbox-gl-browser-language.js'></script>
     <style>
         body { margin:0; padding:0; }
@@ -24,9 +24,17 @@ var map = new mapboxgl.Map({
     minZoom: 2,
     zoom: 3
 });
-map.addControl(new MapboxBrowserLanguage({
-  getLanguageField: function() { return '{name_fr}'; }
-}));
+mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
+var language = new MapboxBrowserLanguage();
+var i = 0;
+setInterval(function() {
+  map.setStyle(language.setLanguage(map.getStyle(), language.supportedLanguages[i]));
+  if (i >= language.supportedLanguages.length) {
+    i = 0;
+  } else {
+    i += 1;
+  }
+}, 5000);
 </script>
 
 </body>
