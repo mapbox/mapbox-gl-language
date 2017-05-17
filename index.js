@@ -33,7 +33,7 @@ function isNameFunctionField(property) {
 function adaptPropertyLanguage(property, languageFieldName) {
   if (isNameStringField(property)) return languageFieldName;
   if (isNameFunctionField(property)) {
-    const newStops = property.stops.map(function (stop) {
+    var newStops = property.stops.map(function (stop) {
       if (stop[1].startsWith('{name')) {
         return [stop[0], languageFieldName];
       }
@@ -57,15 +57,26 @@ function changeLayerTextProperty(layer, languageFieldName) {
   return layer;
 }
 
+function findStreetsSource(style) {
+  var sources = Object.keys(style.sources).filter(function (sourceName) {
+    var source = style.sources[sourceName];
+    return /mapbox-streets-v\d/.test(source.url);
+  });
+  return sources[0];
+}
+
 /**
  * Change the language field for a style.
  * @param {object} style - Mapbox GL style
  */
 MapboxBrowserLanguage.prototype.changeLanguage = function (style) {
   var field = this.options.getLanguageField();
+  var streetsSource = findStreetsSource(style);
+  if (!streetsSource) return style;
 
   var changedLayers = style.layers.map(function (layer) {
-    return changeLayerTextProperty(layer, field);
+    if (layer.source === streetsSource) return changeLayerTextProperty(layer, field);
+    return layer;
   });
 
   var languageStyle = Object.assign({}, style, {
