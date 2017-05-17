@@ -41,7 +41,15 @@ modifies the layers of the map style to use the 'text-field' that matches the br
 
 -   `options` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options to configure the plugin.
     -   `options.supportedLanguages` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>?** List of supported languages
-    -   `options.defaultLanguageField` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** The default language field to use
+    -   `options.getLanguageField` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** Function that returns the language field to use based on the browser language.
+
+#### changeLanguage
+
+Change the language field for a style.
+
+**Parameters**
+
+-   `style` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Mapbox GL style
 
 ## Develop
 

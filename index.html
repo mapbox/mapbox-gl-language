@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title>Mapbox GL Hover</title>
+    <title>Mapbox GL Browser Language</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.31.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.31.0/mapbox-gl.css' rel='stylesheet' />
@@ -25,7 +25,7 @@ var map = new mapboxgl.Map({
     zoom: 3
 });
 map.addControl(new MapboxBrowserLanguage({
-  defaultLanguageField: '{name_fr}'
+  getLanguageField: function() { return '{name_fr}'; }
 }));
 </script>
 
