@@ -89,9 +89,6 @@ function noSpacing(style) {
   var changedLayers = style.layers.map(function (layer) {
     if (!(layer.layout || {})['text-field']) return layer;
     var spacing = 0;
-    if (layer['source-layer'] === 'state_label') {
-      spacing = 0.15;
-    }
     return Object.assign({}, layer, {
       layout: Object.assign({}, layer.layout, {
         'text-letter-spacing': spacing
@@ -155,6 +152,7 @@ function findStreetsSource(style) {
  * @param {string} language - The language iso code
  */
 MapboxBrowserLanguage.prototype.setLanguage = function (style, language) {
+  if (this.supportedLanguages.indexOf(language) < 0) throw new Error('Language ' + language + ' is not supported');
   var streetsSource = findStreetsSource(style);
   if (!streetsSource) return style;
 

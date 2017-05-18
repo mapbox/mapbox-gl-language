@@ -4,8 +4,9 @@
   "description": "Mapbox GL JS plugin for switching language to the browser language.",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint lib && eslint index.js",
-    "test": "npm run lint",
+    "lint": "eslint lib && eslint index.js test/*.js",
+    "pretest": "npm run lint",
+    "test": "nyc tape test/*.test.js | tap-spec",
     "watch": "mkdir -p dist && watchify index.js --debug -v --standalone MapboxBrowserLanguage -o dist/mapbox-gl-browser-language.js",
     "build": "mkdir -p dist && NODE_ENV=production browserify index.js --standalone MapboxBrowserLanguage -o dist/mapbox-gl-browser-language.js",
     "docs": "documentation readme index.js --section API"
@@ -32,6 +33,9 @@
     "documentation": "^4.0.0-beta.18",
     "eslint": "^3.19.0",
     "eslint-config-mourner": "^2.0.1",
+    "nyc": "^10.3.2",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.3",
     "uglify-js": "^2.4.24",
     "watchify": "^3.9.0"
   },
