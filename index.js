@@ -1,4 +1,3 @@
-
 /**
  * Create a new [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that
  * modifies the layers of the map style to use the 'text-field' that matches the browser language.
@@ -8,7 +7,7 @@
  * @param {Function} [options.languageTransform] - Custom style transformation to apply
  * @param {RegExp} [options.languageField=/^\{name/] - RegExp to match if a text-field is a language field
  * @param {Function} [options.getLanguageField] - Given a language choose the field in the vector tiles
- * @param {string} [options.languageSource] - Name of the source that contains the different languages
+ * @param {string} [options.languageSource] - Name of the source that contains the different languages.
  */
 function MapboxLanguage(options) {
   options = Object.assign({}, options);

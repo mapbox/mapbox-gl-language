@@ -7,8 +7,6 @@
     "lint": "eslint lib && eslint index.js test/*.js",
     "pretest": "npm run lint",
     "test": "nyc tape test/*.test.js | tap-spec",
-    "watch": "mkdir -p dist && watchify index.js --debug -v --standalone MapboxLanguage -o dist/mapbox-gl-language.js",
-    "build": "mkdir -p dist && NODE_ENV=production browserify index.js --standalone MapboxLanguage -o dist/mapbox-gl-language.js",
     "docs": "documentation readme index.js --section API"
   },
   "repository": {
