@@ -1,5 +1,5 @@
 {
-  "name": "@mapbox/mapbox-gl-browser-language",
+  "name": "@mapbox/mapbox-gl-language",
   "version": "1.0.1",
   "description": "Mapbox GL JS plugin for switching language to the browser language.",
   "main": "index.js",
@@ -7,13 +7,13 @@
     "lint": "eslint lib && eslint index.js test/*.js",
     "pretest": "npm run lint",
     "test": "nyc tape test/*.test.js | tap-spec",
-    "watch": "mkdir -p dist && watchify index.js --debug -v --standalone MapboxBrowserLanguage -o dist/mapbox-gl-browser-language.js",
-    "build": "mkdir -p dist && NODE_ENV=production browserify index.js --standalone MapboxBrowserLanguage -o dist/mapbox-gl-browser-language.js",
+    "watch": "mkdir -p dist && watchify index.js --debug -v --standalone MapboxLanguage -o dist/mapbox-gl-language.js",
+    "build": "mkdir -p dist && NODE_ENV=production browserify index.js --standalone MapboxLanguage -o dist/mapbox-gl-language.js",
     "docs": "documentation readme index.js --section API"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mapbox/mapbox-gl-browser-language.git"
+    "url": "git+https://github.com/mapbox/mapbox-gl-language.git"
   },
   "keywords": [
     "mapbox",
@@ -25,9 +25,9 @@
   "author": "Lukas Martinelli",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/mapbox/mapbox-gl-browser-language/issues"
+    "url": "https://github.com/mapbox/mapbox-gl-language/issues"
   },
-  "homepage": "https://github.com/mapbox/mapbox-gl-browser-language#readme",
+  "homepage": "https://github.com/mapbox/mapbox-gl-language#readme",
   "devDependencies": {
     "browserify": "^11.2.0",
     "documentation": "^4.0.0-beta.18",

@@ -1,10 +1,10 @@
-# Mapbox GL Browser Language
+# Mapbox GL Language
 
-Switch map language in Mapbox GL JS to the local browser language.
+Switch the language of your style in Mapbox GL JS.
 
 ## Usage
 
-**mapbox-gl-browser-language** is a [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that you can easily add on top of your map. Check `index.html` for a complete example.
+**mapbox-gl-language** is a [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that you can easily add on top of your map. Check `index.html` for a complete example.
 
 Make sure to include the JS files.
 
@@ -18,7 +18,7 @@ npm install --save mapbox-gl @mapbox/mapbox-gl-browser-language
 
 ```javascript
 const mapboxgl = require('mapbox-gl')
-const MapboxBrowserLanguage = require('@mapbox/mapbox-gl-browser-language');
+const MapboxBrowserLanguage = require('@mapbox/mapbox-gl-language');
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/traffic-night-v2',

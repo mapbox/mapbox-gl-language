@@ -7,10 +7,10 @@
  * @param {string[]} [options.supportedLanguages] - List of supported languages
  * @param {Function} [options.languageTransform] - Custom style transformation to apply
  */
-function MapboxBrowserLanguage(options) {
+function MapboxLanguage(options) {
   options = Object.assign({}, options);
-  if (!(this instanceof MapboxBrowserLanguage)) {
-    throw new Error('MapboxBrowserLanguage needs to be called with the new keyword');
+  if (!(this instanceof MapboxLanguage)) {
+    throw new Error('MapboxLanguage needs to be called with the new keyword');
   }
 
   this.setLanguage = this.setLanguage.bind(this);
@@ -151,7 +151,7 @@ function findStreetsSource(style) {
  * @param {object} style - Mapbox GL style to modify
  * @param {string} language - The language iso code
  */
-MapboxBrowserLanguage.prototype.setLanguage = function (style, language) {
+MapboxLanguage.prototype.setLanguage = function (style, language) {
   if (this.supportedLanguages.indexOf(language) < 0) throw new Error('Language ' + language + ' is not supported');
   var streetsSource = findStreetsSource(style);
   if (!streetsSource) return style;
@@ -169,7 +169,7 @@ MapboxBrowserLanguage.prototype.setLanguage = function (style, language) {
   return this._languageTransform(languageStyle, language);
 };
 
-MapboxBrowserLanguage.prototype._updateStyle = function () {
+MapboxLanguage.prototype._updateStyle = function () {
   var style = this._map.getStyle();
   this._map.setStyle(this.setLanguage(style, browserLanguageField(this.supportedLanguages)));
 };
@@ -187,16 +187,16 @@ function browserLanguageField(supportedLanguages) {
   return '{name}';
 }
 
-MapboxBrowserLanguage.prototype.onAdd = function (map) {
+MapboxLanguage.prototype.onAdd = function (map) {
   this._map = map;
   this._map.on('load', this._updateStyle);
   this._container = document.createElement('div');
   return this._container;
 };
 
-MapboxBrowserLanguage.prototype.onRemove = function () {
+MapboxLanguage.prototype.onRemove = function () {
   this._map.off('load', this._updateStyle);
   this._map = undefined;
 };
 
-module.exports = MapboxBrowserLanguage;
+module.exports = MapboxLanguage;
