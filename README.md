@@ -51,6 +51,20 @@ Change the language field for a style.
 
 -   `style` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Mapbox GL style
 
+## Supported Styles
+
+You can configure the plugin to support your own very custom style using style transforms and custom language fields.
+By default this plugin works best with official Mapbox styles (or styles derived from official Mapbox styles):
+
+- `mapbox://mapbox-streets-v9`
+- `mapbox://mapbox-outdoors-v9`
+- `mapbox://mapbox-dark-v9`
+- `mapbox://mapbox-light-v9`
+- `mapbox://mapbox-satellite-streets-v9`
+- `mapbox://mapbox-traffic-day-v9`
+- `mapbox://mapbox-traffic-night-v9`
+
+
 ## Develop
 
 Run the linter and watch for changes to rebuild with browserify.
