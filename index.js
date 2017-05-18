@@ -208,4 +208,8 @@ MapboxLanguage.prototype.onRemove = function () {
   this._map = undefined;
 };
 
-module.exports = MapboxLanguage;
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+  module.exports = MapboxLanguage;
+} else {
+  window.MapboxLanguage = MapboxLanguage;
+}
