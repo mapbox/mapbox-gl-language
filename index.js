@@ -6,6 +6,9 @@
  * @param {object} options - Options to configure the plugin.
  * @param {string[]} [options.supportedLanguages] - List of supported languages
  * @param {Function} [options.languageTransform] - Custom style transformation to apply
+ * @param {RegExp} [options.languageField=/^\{name/] - RegExp to match if a text-field is a language field
+ * @param {Function} [options.getLanguageField] - Given a language choose the field in the vector tiles
+ * @param {string} [options.languageSource] - Name of the source that contains the different languages
  */
 function MapboxLanguage(options) {
   options = Object.assign({}, options);
@@ -15,6 +18,12 @@ function MapboxLanguage(options) {
 
   this.setLanguage = this.setLanguage.bind(this);
   this._updateStyle = this._updateStyle.bind(this);
+
+  this._isLanguageField = options.languageField || /^\{name/;
+  this._getLanguageField = options.getLanguageField || function nameField(language) {
+    return '{name_' + language + '}';
+  };
+  this._languageSource = options.languageSource || null;
   this._languageTransform = options.languageTransform || function (style, language) {
     if (language === 'ar') {
       return noSpacing(style);
@@ -101,21 +110,21 @@ function noSpacing(style) {
   });
 }
 
-function isNameStringField(property) {
-  return typeof property === 'string' && property.startsWith('{name');
+function isNameStringField(isLangField, property) {
+  return typeof property === 'string' && isLangField.test(property);
 }
 
-function isNameFunctionField(property) {
+function isNameFunctionField(isLangField, property) {
   return property.stops && property.stops.filter(function (stop) {
-    return stop[1].startsWith('{name');
+    return isLangField.test(stop[1]);
   }).length > 0;
 }
 
-function adaptPropertyLanguage(property, languageFieldName) {
-  if (isNameStringField(property)) return languageFieldName;
-  if (isNameFunctionField(property)) {
+function adaptPropertyLanguage(isLangField, property, languageFieldName) {
+  if (isNameStringField(isLangField, property)) return languageFieldName;
+  if (isNameFunctionField(isLangField, property)) {
     var newStops = property.stops.map(function (stop) {
-      if (stop[1].startsWith('{name')) {
+      if (isLangField.test(stop[1])) {
         return [stop[0], languageFieldName];
       }
       return stop;
@@ -127,11 +136,11 @@ function adaptPropertyLanguage(property, languageFieldName) {
   return property;
 }
 
-function changeLayerTextProperty(layer, languageFieldName) {
+function changeLayerTextProperty(isLangField, layer, languageFieldName) {
   if (layer.layout && layer.layout['text-field']) {
     return Object.assign({}, layer, {
       layout: Object.assign({}, layer.layout, {
-        'text-field': adaptPropertyLanguage(layer.layout['text-field'], languageFieldName)
+        'text-field': adaptPropertyLanguage(isLangField, layer.layout['text-field'], languageFieldName)
       })
     });
   }
@@ -153,12 +162,13 @@ function findStreetsSource(style) {
  */
 MapboxLanguage.prototype.setLanguage = function (style, language) {
   if (this.supportedLanguages.indexOf(language) < 0) throw new Error('Language ' + language + ' is not supported');
-  var streetsSource = findStreetsSource(style);
+  var streetsSource = this._languageSource || findStreetsSource(style);
   if (!streetsSource) return style;
 
-  var field = '{name_' + language + '}';
+  var field = this._getLanguageField(language);
+  var isLangField = this._isLanguageField;
   var changedLayers = style.layers.map(function (layer) {
-    if (layer.source === streetsSource) return changeLayerTextProperty(layer, field);
+    if (layer.source === streetsSource) return changeLayerTextProperty(isLangField, layer, field);
     return layer;
   });
 

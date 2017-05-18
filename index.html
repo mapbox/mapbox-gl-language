@@ -25,16 +25,16 @@ var map = new mapboxgl.Map({
     zoom: 3
 });
 mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
-var language = new MapboxBrowserLanguage();
+var language = new MapboxLanguage();
 var i = 0;
 setInterval(function() {
   map.setStyle(language.setLanguage(map.getStyle(), language.supportedLanguages[i]));
-  if (i >= language.supportedLanguages.length) {
+  if (i >= language.supportedLanguages.length - 1) {
     i = 0;
   } else {
     i += 1;
   }
-}, 5000);
+}, 2000);
 
 </script>
 

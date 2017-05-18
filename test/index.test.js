@@ -1,5 +1,5 @@
 var test = require('tape');
-var MapboxBrowserLanguage = require('../index');
+var MapboxLanguage = require('../index');
 
 function makeStyle(layer) {
   return {
@@ -16,7 +16,7 @@ function makeStyle(layer) {
 }
 
 test('[lambdaCheck] failure', (assert) => {
-  var language = new MapboxBrowserLanguage();
+  var language = new MapboxLanguage();
 
   var style = makeStyle({
     'id': 'state-label-sm',
