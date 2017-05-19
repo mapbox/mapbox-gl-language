@@ -72,6 +72,7 @@ Create a minified standalone build.
 
 Showcasing the languages supported by Mapbox Streets.
 
+- [English](https://mapbox.github.io/mapbox-gl-language/examples/en.html)
 - [Arabic](https://mapbox.github.io/mapbox-gl-language/examples/ar.html)
 - [French](https://mapbox.github.io/mapbox-gl-language/examples/fr.html)
 - [Portuguese](https://mapbox.github.io/mapbox-gl-language/examples/pt.html)
