@@ -17,7 +17,7 @@ function MapboxLanguage(options) {
   }
 
   this.setLanguage = this.setLanguage.bind(this);
-  this._updateStyle = this._updateStyle.bind(this);
+  this._initialStyleUpdate = this._initialStyleUpdate.bind(this);
 
   this._defaultLanguage = options.defaultLanguage;
   this._isLanguageField = options.languageField || /^\{name/;
@@ -180,10 +180,12 @@ MapboxLanguage.prototype.setLanguage = function (style, language) {
   return this._languageTransform(languageStyle, language);
 };
 
-MapboxLanguage.prototype._updateStyle = function () {
+MapboxLanguage.prototype._initialStyleUpdate = function () {
   var style = this._map.getStyle();
   var language = this._defaultLanguage || browserLanguage(this.supportedLanguages);
-  console.log('myyyy language', language);
+
+  // We only update the style once
+  this._map.off('styledata', this._initialStyleUpdate);
   this._map.setStyle(this.setLanguage(style, language));
 };
 
@@ -202,13 +204,13 @@ function browserLanguage(supportedLanguages) {
 
 MapboxLanguage.prototype.onAdd = function (map) {
   this._map = map;
-  this._map.on('load', this._updateStyle);
+  this._map.on('styledata', this._initialStyleUpdate)
   this._container = document.createElement('div');
   return this._container;
 };
 
 MapboxLanguage.prototype.onRemove = function () {
-  this._map.off('load', this._updateStyle);
+  this._map.off('styledata', this._initialStyleUpdate);
   this._map = undefined;
 };
 
