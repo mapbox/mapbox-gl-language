@@ -8,6 +8,7 @@
  * @param {RegExp} [options.languageField=/^\{name/] - RegExp to match if a text-field is a language field
  * @param {Function} [options.getLanguageField] - Given a language choose the field in the vector tiles
  * @param {string} [options.languageSource] - Name of the source that contains the different languages.
+ * @param {string} [options.defaultLanguage] - Name of the default language to initialize style after loading.
  */
 function MapboxLanguage(options) {
   options = Object.assign({}, options);
@@ -18,6 +19,7 @@ function MapboxLanguage(options) {
   this.setLanguage = this.setLanguage.bind(this);
   this._updateStyle = this._updateStyle.bind(this);
 
+  this._defaultLanguage = options.defaultLanguage;
   this._isLanguageField = options.languageField || /^\{name/;
   this._getLanguageField = options.getLanguageField || function nameField(language) {
     return '{name_' + language + '}';
@@ -180,10 +182,12 @@ MapboxLanguage.prototype.setLanguage = function (style, language) {
 
 MapboxLanguage.prototype._updateStyle = function () {
   var style = this._map.getStyle();
-  this._map.setStyle(this.setLanguage(style, browserLanguageField(this.supportedLanguages)));
+  var language = this._defaultLanguage || browserLanguage(this.supportedLanguages);
+  console.log('myyyy language', language);
+  this._map.setStyle(this.setLanguage(style, language));
 };
 
-function browserLanguageField(supportedLanguages) {
+function browserLanguage(supportedLanguages) {
   var language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
   var parts = language.split('-');
   var languageCode = language;
@@ -191,9 +195,9 @@ function browserLanguageField(supportedLanguages) {
     languageCode = parts[0];
   }
   if (supportedLanguages.indexOf(languageCode) > -1) {
-    return '{name_' + languageCode + '}';
+    return languageCode;
   }
-  return '{name}';
+  return null;
 }
 
 MapboxLanguage.prototype.onAdd = function (map) {

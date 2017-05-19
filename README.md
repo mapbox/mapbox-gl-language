@@ -68,6 +68,18 @@ Create a minified standalone build.
     npm install
     npm run build
 
+## Languages
+
+Showcasing the languages supported by Mapbox Streets.
+
+- [Arabic](https://mapbox.github.io/mapbox-gl-language/examples/ar.html)
+- [French](https://mapbox.github.io/mapbox-gl-language/examples/fr.html)
+- [Portuguese](https://mapbox.github.io/mapbox-gl-language/examples/pt.html)
+- [German](https://mapbox.github.io/mapbox-gl-language/examples/de.html)
+- [Spanish](https://mapbox.github.io/mapbox-gl-language/examples/es.html)
+- [Russian](https://mapbox.github.io/mapbox-gl-language/examples/ru.html)
+- [Chinese](https://mapbox.github.io/mapbox-gl-language/examples/zh.html)
+
 ## Supported Styles
 
 You can configure the plugin to support your own very custom style using style transforms and custom language fields.
