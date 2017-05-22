@@ -22,7 +22,8 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/mapbox/streets-v10',
     center: [-98, 38.88],
     minZoom: 2,
-    zoom: 3
+    zoom: 3,
+    hash: true
 });
 mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
 map.addControl(new MapboxLanguage({
