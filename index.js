@@ -205,7 +205,7 @@ function browserLanguage(supportedLanguages) {
 
 MapboxLanguage.prototype.onAdd = function (map) {
   this._map = map;
-  this._map.on('styledata', this._initialStyleUpdate)
+  this._map.on('styledata', this._initialStyleUpdate);
   this._container = document.createElement('div');
   return this._container;
 };
