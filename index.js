@@ -160,6 +160,7 @@ function findStreetsSource(style) {
  * Explicitly change the language for a style.
  * @param {object} style - Mapbox GL style to modify
  * @param {string} language - The language iso code
+ * @returns {object} the modified style
  */
 MapboxLanguage.prototype.setLanguage = function (style, language) {
   if (this.supportedLanguages.indexOf(language) < 0) throw new Error('Language ' + language + ' is not supported');

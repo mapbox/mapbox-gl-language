@@ -15,9 +15,8 @@ function makeStyle(layer) {
 
 }
 
-test('[lambdaCheck] failure', (assert) => {
+test('setLanguage for different text fields', (assert) => {
   var language = new MapboxLanguage();
-
   var style = makeStyle({
     'id': 'state-label-sm',
     'source': 'composite',
