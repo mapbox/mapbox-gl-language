@@ -44,7 +44,8 @@ modifies the layers of the map style to use the 'text-field' that matches the br
     -   `options.languageTransform` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)?** Custom style transformation to apply
     -   `options.languageField` **[RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp)?** RegExp to match if a text-field is a language field (optional, default `/^\{name/`)
     -   `options.getLanguageField` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)?** Given a language choose the field in the vector tiles
-    -   `options.languageSource` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** Name of the source that contains the different languages
+    -   `options.languageSource` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** Name of the source that contains the different languages.
+    -   `options.defaultLanguage` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** Name of the default language to initialize style after loading.
 
 #### setLanguage
 
@@ -54,6 +55,8 @@ Explicitly change the language for a style.
 
 -   `style` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Mapbox GL style to modify
 -   `language` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** The language iso code
+
+Returns **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the modified style
 
 ## Develop
 
