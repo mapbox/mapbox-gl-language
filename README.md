@@ -1,4 +1,4 @@
-# Mapbox GL Language
+# Mapbox GL Language [![Build Status](https://travis-ci.org/mapbox/mapbox-gl-language.svg?branch=master)](https://travis-ci.org/mapbox/mapbox-gl-language) [![npm](https://img.shields.io/npm/v/@mapbox/mapbox-gl-language.svg)](https://www.npmjs.com/package/@mapbox/mapbox-gl-language)
 
 Switch the language of your style in Mapbox GL JS.
 
