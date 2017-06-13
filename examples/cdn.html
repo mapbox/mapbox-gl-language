@@ -6,7 +6,7 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.34.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.34.0/mapbox-gl.css' rel='stylesheet' />
-    <script src='index.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.9.0/mapbox-gl-language.js'></script>
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -25,18 +25,7 @@ var map = new mapboxgl.Map({
     zoom: 3
 });
 mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
-var language = new MapboxLanguage();
-var i = 0;
-setInterval(function() {
-  map.setStyle(language.setLanguage(map.getStyle(), language.supportedLanguages[i]));
-  if (i >= language.supportedLanguages.length - 1) {
-    i = 0;
-  } else {
-    i += 1;
-  }
-}, 2000);
-
+map.addControl(new MapboxLanguage());
 </script>
-
 </body>
 </html>

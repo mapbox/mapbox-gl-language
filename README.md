@@ -8,7 +8,13 @@ Switch the language of your style in Mapbox GL JS.
 
 Make sure to include the JS files.
 
-**When using NPM**
+**When using a CDN**
+
+```
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.9.0/mapbox-gl-language.js'></script>
+```
+
+**When using modules**
 
 Check [how to use Mapbox GL JS in a module bundler](https://www.mapbox.com/mapbox-gl-js/api/).
 
@@ -17,16 +23,29 @@ npm install --save mapbox-gl @mapbox/mapbox-gl-browser-language
 ```
 
 ```javascript
-const mapboxgl = require('mapbox-gl')
-const MapboxBrowserLanguage = require('@mapbox/mapbox-gl-language');
-const map = new mapboxgl.Map({
+var mapboxgl = require('mapbox-gl')
+var MapboxLanguage = require('@mapbox/mapbox-gl-language');
+```
+
+**Example**
+
+```javascript
+mapboxgl.accessToken = 'YOUR_ACCESS_TOKEN';
+var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/traffic-night-v2',
+    style: 'mapbox://styles/mapbox/streets-v10',
     center: [-77.0259, 38.9010],
     zoom: 9
 });
-map.addControl(new MapboxBrowserLanguage());
+
+// Add RTL support if you want to support Arabic
+// mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
+
+var language = new MapboxLanguage();
+map.addControl(language);
 ```
+
+Check `examples/` for more usage examples.
 
 ## API
 
@@ -90,10 +109,10 @@ Showcasing the languages supported by Mapbox Streets.
 You can configure the plugin to support your own very custom style using style transforms and custom language fields.
 By default this plugin works best with official Mapbox styles (or styles derived from official Mapbox styles):
 
-- `mapbox://mapbox-streets-v9`
-- `mapbox://mapbox-outdoors-v9`
+- `mapbox://mapbox-streets-v10`
+- `mapbox://mapbox-outdoors-v10`
 - `mapbox://mapbox-dark-v9`
 - `mapbox://mapbox-light-v9`
 - `mapbox://mapbox-satellite-streets-v9`
-- `mapbox://mapbox-traffic-day-v9`
-- `mapbox://mapbox-traffic-night-v9`
+- `mapbox://mapbox-traffic-day-v2`
+- `mapbox://mapbox-traffic-night-v2`
