@@ -1,12 +1,20 @@
 # Mapbox GL Language [![Build Status](https://travis-ci.org/mapbox/mapbox-gl-language.svg?branch=master)](https://travis-ci.org/mapbox/mapbox-gl-language) [![npm](https://img.shields.io/npm/v/@mapbox/mapbox-gl-language.svg)](https://www.npmjs.com/package/@mapbox/mapbox-gl-language)
 
-Switch the language of your style in Mapbox GL JS.
+Adds support for switching the language of your map style in [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/) maps.
+
+**Requires [mapbox-gl-js](https://github.com/mapbox/mapbox-gl-js).**
+
+![Multiple language supported with style transforms](https://cloud.githubusercontent.com/assets/1288339/26266912/89b1b6ba-3cb5-11e7-9964-49f51290d627.gif)
+
+*Automatic style transformations for different languages*
+
+![Switch language based on user agent](https://cloud.githubusercontent.com/assets/1288339/26269878/742cdb02-3cc5-11e7-8479-c6ab3f0f8a82.gif)
+
+*Switch language based on user agent*
 
 ## Usage
 
-**mapbox-gl-language** is a [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that you can easily add on top of your map. Check `index.html` for a complete example.
-
-Make sure to include the JS files.
+**mapbox-gl-language** is a [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that you can easily add on top of your map.
 
 **When using a CDN**
 
