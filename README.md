@@ -27,7 +27,7 @@ Adds support for switching the language of your map style in [Mapbox GL JS](http
 Check [how to use Mapbox GL JS in a module bundler](https://www.mapbox.com/mapbox-gl-js/api/).
 
 ```bash
-npm install --save mapbox-gl @mapbox/mapbox-gl-browser-language
+npm install --save mapbox-gl @mapbox/mapbox-gl-language
 ```
 
 ```javascript
