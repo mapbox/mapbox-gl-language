@@ -19,7 +19,7 @@ Adds support for switching the language of your map style in [Mapbox GL JS](http
 **When using a CDN**
 
 ```
-<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.9.0/mapbox-gl-language.js'></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.9.2/mapbox-gl-language.js'></script>
 ```
 
 **When using modules**
