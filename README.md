@@ -111,6 +111,7 @@ Showcasing the languages supported by Mapbox Streets.
 - [Spanish](https://mapbox.github.io/mapbox-gl-language/examples/es.html)
 - [Russian](https://mapbox.github.io/mapbox-gl-language/examples/ru.html)
 - [Chinese](https://mapbox.github.io/mapbox-gl-language/examples/zh.html)
+- [Local language](https://mapbox.github.io/mapbox-gl-language/examples/local.html)
 
 ## Supported Styles
 

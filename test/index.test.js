@@ -43,7 +43,7 @@ test('setLanguage for different text fields', (assert) => {
         [6, '{name_es}']
       ]
     }
-  }, 'switch style to spanish name field');
+  }, 'switch style to english name field');
 
   var arStyle = language.setLanguage(style, 'ar');
   assert.deepEqual(arStyle.layers[0].layout, {
@@ -55,7 +55,19 @@ test('setLanguage for different text fields', (assert) => {
         [6, '{name_ar}']
       ]
     }
-  }, 'switch style to spanish arabic field');
+  }, 'switch style to arabic name field');
+
+  var localStyle = language.setLanguage(style, 'local');
+  assert.deepEqual(localStyle.layers[0].layout, {
+    'text-letter-spacing': 0.15,
+    'text-field': {
+      'base': 1,
+      'stops': [
+        [0, '{abbr}'],
+        [6, '{name}']
+      ]
+    }
+  }, 'switch style to local name field');
 
   assert.end();
 });
