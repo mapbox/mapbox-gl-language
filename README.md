@@ -2,7 +2,7 @@
 
 Adds support for switching the language of your map style in [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/) maps.
 
-**Requires [mapbox-gl-js](https://github.com/mapbox/mapbox-gl-js).** (The Mapbox iOS and macOS SDKs have a built-in localization option; see `MGLStyle.localizesLabels` in the respective API references for details.)
+**Requires [mapbox-gl-js](https://github.com/mapbox/mapbox-gl-js).** For other platforms, such as Android and iOS, see [this help document](https://www.mapbox.com/help/change-language/).
 
 ![Multiple language supported with style transforms](https://cloud.githubusercontent.com/assets/1288339/26266912/89b1b6ba-3cb5-11e7-9964-49f51290d627.gif)
 
