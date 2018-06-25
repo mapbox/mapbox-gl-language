@@ -9,6 +9,7 @@
  * @param {Function} [options.getLanguageField] - Given a language choose the field in the vector tiles
  * @param {string} [options.languageSource] - Name of the source that contains the different languages.
  * @param {string} [options.defaultLanguage] - Name of the default language to initialize style after loading.
+ * @param {string[]} [options.excludedLayerIds] - Name of the layers that should be excluded from translation.
  */
 function MapboxLanguage(options) {
   options = Object.assign({}, options);
@@ -32,6 +33,7 @@ function MapboxLanguage(options) {
       return standardSpacing(style);
     }
   };
+  this._excludedLayerIds = options.excludedLayerIds || [];
   this.supportedLanguages = options.supportedLanguages || ['local', 'en', 'es', 'fr', 'de', 'ru', 'zh', 'ar', 'pt'];
 }
 
@@ -137,8 +139,8 @@ function adaptPropertyLanguage(isLangField, property, languageFieldName) {
   return property;
 }
 
-function changeLayerTextProperty(isLangField, layer, languageFieldName) {
-  if (layer.layout && layer.layout['text-field']) {
+function changeLayerTextProperty(isLangField, layer, languageFieldName, excludedLayerIds) {
+  if (layer.layout && layer.layout['text-field'] && excludedLayerIds.indexOf(layer.id) === -1) {
     return Object.assign({}, layer, {
       layout: Object.assign({}, layer.layout, {
         'text-field': adaptPropertyLanguage(isLangField, layer.layout['text-field'], languageFieldName)
@@ -169,8 +171,9 @@ MapboxLanguage.prototype.setLanguage = function (style, language) {
 
   var field = this._getLanguageField(language);
   var isLangField = this._isLanguageField;
+  var excludedLayerIds = this._excludedLayerIds;
   var changedLayers = style.layers.map(function (layer) {
-    if (layer.source === streetsSource) return changeLayerTextProperty(isLangField, layer, field);
+    if (layer.source === streetsSource) return changeLayerTextProperty(isLangField, layer, field, excludedLayerIds);
     return layer;
   });
 
