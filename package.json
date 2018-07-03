@@ -54,5 +54,8 @@
         2
       ]
     }
+  },
+  "dependencies": {
+    "@mapbox/locale-utils": "0.0.6"
   }
 }

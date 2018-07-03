@@ -1,3 +1,5 @@
+var localeUtils = require('@mapbox/locale-utils');
+
 /**
  * Create a new [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that
  * modifies the layers of the map style to use the 'text-field' that matches the browser language.
@@ -195,15 +197,7 @@ MapboxLanguage.prototype._initialStyleUpdate = function () {
 
 function browserLanguage(supportedLanguages) {
   var language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
-  var parts = language.split('-');
-  var languageCode = language;
-  if (parts.length > 1) {
-    languageCode = parts[0];
-  }
-  if (supportedLanguages.indexOf(languageCode) > -1) {
-    return languageCode;
-  }
-  return null;
+  return localeUtils.bestMatchingLocale(language, supportedLanguages);
 }
 
 MapboxLanguage.prototype.onAdd = function (map) {
