@@ -143,6 +143,9 @@ function adaptPropertyLanguage(isLangField, property, languageFieldName) {
 
 function changeLayerTextProperty(isLangField, layer, languageFieldName, excludedLayerIds) {
   if (layer.layout && layer.layout['text-field'] && excludedLayerIds.indexOf(layer.id) === -1) {
+    if (languageFieldName === 'zh-Hans' && ['country_label', 'state_label', 'marine_label'].indexOf(layer['source-layer']) !== -1) {
+      languageFieldName = 'zh';
+    }
     return Object.assign({}, layer, {
       layout: Object.assign({}, layer.layout, {
         'text-field': adaptPropertyLanguage(isLangField, layer.layout['text-field'], languageFieldName)
