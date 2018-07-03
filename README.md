@@ -104,7 +104,7 @@ Showcasing the languages supported by Mapbox Streets.
 
 - [Your Browser language](https://mapbox.github.io/mapbox-gl-language/examples/browser.html)
 - [Arabic](https://mapbox.github.io/mapbox-gl-language/examples/ar.html)
-- [Chinese](https://mapbox.github.io/mapbox-gl-language/examples/zh.html)
+- [Chinese](https://mapbox.github.io/mapbox-gl-language/examples/zh.html) ([Simplified](https://mapbox.github.io/mapbox-gl-language/examples/zh-Hans.html))
 - [English](https://mapbox.github.io/mapbox-gl-language/examples/en.html)
 - [French](https://mapbox.github.io/mapbox-gl-language/examples/fr.html)
 - [German](https://mapbox.github.io/mapbox-gl-language/examples/de.html)
