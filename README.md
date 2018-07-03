@@ -103,14 +103,16 @@ Create a minified standalone build.
 Showcasing the languages supported by Mapbox Streets.
 
 - [Your Browser language](https://mapbox.github.io/mapbox-gl-language/examples/browser.html)
-- [English](https://mapbox.github.io/mapbox-gl-language/examples/en.html)
 - [Arabic](https://mapbox.github.io/mapbox-gl-language/examples/ar.html)
-- [French](https://mapbox.github.io/mapbox-gl-language/examples/fr.html)
-- [Portuguese](https://mapbox.github.io/mapbox-gl-language/examples/pt.html)
-- [German](https://mapbox.github.io/mapbox-gl-language/examples/de.html)
-- [Spanish](https://mapbox.github.io/mapbox-gl-language/examples/es.html)
-- [Russian](https://mapbox.github.io/mapbox-gl-language/examples/ru.html)
 - [Chinese](https://mapbox.github.io/mapbox-gl-language/examples/zh.html)
+- [English](https://mapbox.github.io/mapbox-gl-language/examples/en.html)
+- [French](https://mapbox.github.io/mapbox-gl-language/examples/fr.html)
+- [German](https://mapbox.github.io/mapbox-gl-language/examples/de.html)
+- [Japanese](https://mapbox.github.io/mapbox-gl-language/examples/ja.html)
+- [Korean](https://mapbox.github.io/mapbox-gl-language/examples/ko.html)
+- [Portuguese](https://mapbox.github.io/mapbox-gl-language/examples/pt.html)
+- [Russian](https://mapbox.github.io/mapbox-gl-language/examples/ru.html)
+- [Spanish](https://mapbox.github.io/mapbox-gl-language/examples/es.html)
 
 ## Supported Styles
 
