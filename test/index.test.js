@@ -55,8 +55,8 @@ test('setLanguage for different text fields', (assert) => {
     }
   }, 'switch style to arabic name field');
 
-  var localStyle = language.setLanguage(style, 'local');
-  assert.deepEqual(localStyle.layers[0].layout, {
+  var mulStyle = language.setLanguage(style, 'mul');
+  assert.deepEqual(mulStyle.layers[0].layout, {
     'text-letter-spacing': 0.15,
     'text-field': {
       'base': 1,
@@ -65,7 +65,7 @@ test('setLanguage for different text fields', (assert) => {
         [6, '{name}']
       ]
     }
-  }, 'switch style to local name field');
+  }, 'switch style to multilingual name field');
 
   assert.end();
 });

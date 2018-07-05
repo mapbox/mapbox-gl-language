@@ -23,7 +23,7 @@ function MapboxLanguage(options) {
   this._defaultLanguage = options.defaultLanguage;
   this._isLanguageField = options.languageField || /^\{name/;
   this._getLanguageField = options.getLanguageField || function nameField(language) {
-    return language === 'local' ? '{name}' : '{name_' + language + '}';
+    return language === 'mul' ? '{name}' : '{name_' + language + '}';
   };
   this._languageSource = options.languageSource || null;
   this._languageTransform = options.languageTransform || function (style, language) {
@@ -34,7 +34,7 @@ function MapboxLanguage(options) {
     }
   };
   this._excludedLayerIds = options.excludedLayerIds || [];
-  this.supportedLanguages = options.supportedLanguages || ['ar', 'en', 'es', 'fr', 'de', 'local', 'ja', 'ko', 'pt', 'ru', 'zh'];
+  this.supportedLanguages = options.supportedLanguages || ['ar', 'en', 'es', 'fr', 'de', 'ja', 'ko', 'mul', 'pt', 'ru', 'zh'];
 }
 
 function standardSpacing(style) {
