@@ -38,7 +38,7 @@
     "watchify": "^3.9.0"
   },
   "peerDependencies": {
-    "mapbox-gl": "^0.29.0"
+    "mapbox-gl": ">=0.29.0 <2.0.0"
   },
   "eslintConfig": {
     "parserOptions": {
