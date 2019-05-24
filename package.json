@@ -27,12 +27,12 @@
   },
   "homepage": "https://github.com/mapbox/mapbox-gl-language#readme",
   "devDependencies": {
-    "browserify": "^11.2.0",
-    "documentation": "^4.0.0-beta.18",
+    "browserify": "^16.2.3",
+    "documentation": "^11.0.0",
     "eslint": "^3.19.0",
     "eslint-config-mourner": "^2.0.1",
-    "nyc": "^10.3.2",
-    "tap-spec": "^4.1.1",
+    "nyc": "^14.1.1",
+    "tap-spec": "^5.0.0",
     "tape": "^4.6.3",
     "uglify-js": "^2.4.24",
     "watchify": "^3.9.0"
