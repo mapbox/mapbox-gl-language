@@ -2,14 +2,14 @@
  * Create a new [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that
  * modifies the layers of the map style to use the 'text-field' that matches the browser language.
  * @constructor
- * @param {object} options - Options to configure the plugin.
+ * @param {object} options - Options to configure the plugin
  * @param {string[]} [options.supportedLanguages] - List of supported languages
  * @param {Function} [options.languageTransform] - Custom style transformation to apply
  * @param {RegExp} [options.languageField=/^\{name/] - RegExp to match if a text-field is a language field
  * @param {Function} [options.getLanguageField] - Given a language choose the field in the vector tiles
- * @param {string} [options.languageSource] - Name of the source that contains the different languages.
- * @param {string} [options.defaultLanguage] - Name of the default language to initialize style after loading.
- * @param {string[]} [options.excludedLayerIds] - Name of the layers that should be excluded from translation.
+ * @param {string} [options.getLanguageSource] - Given a style choose the name of the source that contains the different languages
+ * @param {string} [options.defaultLanguage] - Name of the default language to initialize style after loading
+ * @param {string[]} [options.excludedLayerIds] - Name of the layers that should be excluded from translation
  */
 function MapboxLanguage(options) {
   options = Object.assign({}, options);
@@ -25,7 +25,13 @@ function MapboxLanguage(options) {
   this._getLanguageField = options.getLanguageField || function nameField(language) {
     return language === 'mul' ? '{name}' : '{name_' + language + '}';
   };
-  this._languageSource = options.languageSource || null;
+  this._getLanguageSource = options.getLanguageSource || function (style) {
+    var sources = Object.keys(style.sources).filter(function (sourceName) {
+      var source = style.sources[sourceName];
+      return /mapbox-streets-v\d/.test(source.url);
+    });
+    return sources[0];
+  };
   this._languageTransform = options.languageTransform || function (style, language) {
     if (language === 'ar') {
       return noSpacing(style);
@@ -150,14 +156,6 @@ function changeLayerTextProperty(isLangField, layer, languageFieldName, excluded
   return layer;
 }
 
-function findStreetsSource(style) {
-  var sources = Object.keys(style.sources).filter(function (sourceName) {
-    var source = style.sources[sourceName];
-    return /mapbox-streets-v\d/.test(source.url);
-  });
-  return sources[0];
-}
-
 /**
  * Explicitly change the language for a style.
  * @param {object} style - Mapbox GL style to modify
@@ -166,14 +164,14 @@ function findStreetsSource(style) {
  */
 MapboxLanguage.prototype.setLanguage = function (style, language) {
   if (this.supportedLanguages.indexOf(language) < 0) throw new Error('Language ' + language + ' is not supported');
-  var streetsSource = this._languageSource || findStreetsSource(style);
-  if (!streetsSource) return style;
+  var languageSource = this._getLanguageSource(style);
+  if (!languageSource) return style;
 
   var field = this._getLanguageField(language);
   var isLangField = this._isLanguageField;
   var excludedLayerIds = this._excludedLayerIds;
   var changedLayers = style.layers.map(function (layer) {
-    if (layer.source === streetsSource) return changeLayerTextProperty(isLangField, layer, field, excludedLayerIds);
+    if (layer.source === languageSource) return changeLayerTextProperty(isLangField, layer, field, excludedLayerIds);
     return layer;
   });
 
