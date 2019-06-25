@@ -7,7 +7,7 @@
  * @param {Function} [options.languageTransform] - Custom style transformation to apply
  * @param {RegExp} [options.languageField=/^\{name/] - RegExp to match if a text-field is a language field
  * @param {Function} [options.getLanguageField] - Given a language choose the field in the vector tiles
- * @param {string} [options.isLanguageSource] - Given a source check if it contains different languages
+ * @param {object} [options.isLanguageSource] - Given a source check if it contains the different languages
  * @param {string} [options.defaultLanguage] - Name of the default language to initialize style after loading
  * @param {string[]} [options.excludedLayerIds] - Name of the layers that should be excluded from translation
  */
