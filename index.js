@@ -7,7 +7,7 @@
  * @param {Function} [options.languageTransform] - Custom style transformation to apply
  * @param {RegExp} [options.languageField=/^\{name/] - RegExp to match if a text-field is a language field
  * @param {Function} [options.getLanguageField] - Given a language choose the field in the vector tiles
- * @param {string} [options.getLanguageSource] - Given a style choose the name of the source that contains the different languages
+ * @param {string} [options.isLanguageSource] - Given a source check if it contains different languages
  * @param {string} [options.defaultLanguage] - Name of the default language to initialize style after loading
  * @param {string[]} [options.excludedLayerIds] - Name of the layers that should be excluded from translation
  */
@@ -25,12 +25,8 @@ function MapboxLanguage(options) {
   this._getLanguageField = options.getLanguageField || function nameField(language) {
     return language === 'mul' ? '{name}' : '{name_' + language + '}';
   };
-  this._getLanguageSource = options.getLanguageSource || function (style) {
-    var sources = Object.keys(style.sources).filter(function (sourceName) {
-      var source = style.sources[sourceName];
-      return /mapbox-streets-v\d/.test(source.url);
-    });
-    return sources[0];
+  this._isLanguageSource = options.isLanguageSource || function (source) {
+    return /mapbox-streets-v\d/.test(source.url);
   };
   this._languageTransform = options.languageTransform || function (style, language) {
     if (language === 'ar') {
@@ -164,14 +160,21 @@ function changeLayerTextProperty(isLangField, layer, languageFieldName, excluded
  */
 MapboxLanguage.prototype.setLanguage = function (style, language) {
   if (this.supportedLanguages.indexOf(language) < 0) throw new Error('Language ' + language + ' is not supported');
-  var languageSource = this._getLanguageSource(style);
-  if (!languageSource) return style;
+  var languageSources = [];
+  Object.keys(style.sources).forEach(function (key) {
+    if (this._isLanguageSource(style.sources[key])) {
+      languageSources.push(key);
+    }
+  }.bind(this));
+  if (!languageSources.length) return style;
 
   var field = this._getLanguageField(language);
   var isLangField = this._isLanguageField;
   var excludedLayerIds = this._excludedLayerIds;
   var changedLayers = style.layers.map(function (layer) {
-    if (layer.source === languageSource) return changeLayerTextProperty(isLangField, layer, field, excludedLayerIds);
+    if (languageSources.indexOf(layer.source) !== -1) {
+      return changeLayerTextProperty(isLangField, layer, field, excludedLayerIds);
+    }
     return layer;
   });
 
