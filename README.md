@@ -19,7 +19,7 @@ Adds support for switching the language of your map style in [Mapbox GL JS](http
 **When using a CDN**
 
 ```
-<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.0/mapbox-gl-language.js'></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
 ```
 
 **When using modules**
@@ -47,7 +47,7 @@ var map = new mapboxgl.Map({
 });
 
 // Add RTL support if you want to support Arabic
-// mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
+// mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.10.1/mapbox-gl-rtl-text.js');
 
 var language = new MapboxLanguage();
 map.addControl(language);
