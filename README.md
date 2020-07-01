@@ -116,10 +116,10 @@ Showcasing the languages supported by Mapbox Streets.
 You can configure the plugin to support your own very custom style using style transforms and custom language fields.
 By default this plugin works best with official Mapbox styles (or styles derived from official Mapbox styles):
 
-- `mapbox://mapbox-streets-v10`
-- `mapbox://mapbox-outdoors-v10`
-- `mapbox://mapbox-dark-v9`
-- `mapbox://mapbox-light-v9`
-- `mapbox://mapbox-satellite-streets-v9`
-- `mapbox://mapbox-traffic-day-v2`
-- `mapbox://mapbox-traffic-night-v2`
+- `mapbox://styles/mapbox/streets-v10`
+- `mapbox://styles/mapbox/outdoors-v10`
+- `mapbox://styles/mapbox/dark-v9`
+- `mapbox://styles/mapbox/light-v9`
+- `mapbox://styles/mapbox/satellite-streets-v9`
+- `mapbox://styles/mapbox/traffic-day-v2`
+- `mapbox://styles/mapbox/traffic-night-v2`
