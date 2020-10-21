@@ -21,7 +21,7 @@ function MapboxLanguage(options) {
   this._initialStyleUpdate = this._initialStyleUpdate.bind(this);
 
   this._defaultLanguage = options.defaultLanguage;
-  this._isLanguageField = options.languageField || /^\{name/;
+  this._isLanguageField = options.languageField || /^\{?name/;
   this._getLanguageField = options.getLanguageField || function nameField(language) {
     return language === 'mul' ? '{name}' : '{name_' + language + '}';
   };
@@ -123,7 +123,32 @@ function isNameFunctionField(isLangField, property) {
   }).length > 0;
 }
 
+function isNameFlatExpressionField(isLangField, property) {
+  return Array.isArray(property) && property[0] === 'get' && isLangField.test(property[1]);
+}
+
+function isNameNestedExpressionField(isLangField, property) {
+  if (Array.isArray(property) && Array.isArray(property[1])) {
+    for (let i = 1; i < property.length; i++) {
+      if (Array.isArray(property[i])) {
+        isNameNestedExpressionField(isLangField, property[i]);
+      }
+      return isNameFlatExpressionField(isLangField, property[i]);
+    }
+  }
+  return false;
+}
+
 function adaptPropertyLanguage(isLangField, property, languageFieldName) {
+  if (isNameNestedExpressionField(isLangField, property)) {
+    const nonTokenizedFieldName = languageFieldName.replace('{', '').replace('}', '');
+    // do not alter the original expression so we can fall back to English names
+    // but replace the inserted case expression so property does not grow indefinitely in length
+    const replace = +(property.length !== 3);
+    property.splice(1, replace, ['get', nonTokenizedFieldName]);
+    return property;
+  };
+  if (isNameFlatExpressionField(isLangField, property)) return ['get', languageFieldName];
   if (isNameStringField(isLangField, property)) return languageFieldName;
   if (isNameFunctionField(isLangField, property)) {
     var newStops = property.stops.map(function (stop) {
