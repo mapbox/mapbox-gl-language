@@ -2,6 +2,7 @@ var test = require('tape');
 var MapboxLanguage = require('../index');
 
 function makeStyle(layers, version) {
+  if (!version) version = 'v11';
   return {
     sources: {
       composite: {
@@ -38,6 +39,32 @@ test('MapboxLanguage', (t) => {
     t.end();
   });
 
+  test('unwrapped get expression styles', (t) => {
+    var language = new MapboxLanguage();
+    var layers = [{
+      'id': 'state-label-sm',
+      'source': 'composite',
+      'source-layer': 'state_label',
+      'layout': {
+        'text-letter-spacing': 0.15,
+        'text-field': ['get', 'name']
+      }
+    }];
+    var style = makeStyle(layers);
+
+    var esStyle = language.setLanguage(style, 'es');
+    console.log('esStyle: ', esStyle);
+    t.deepEqual(esStyle.layers[0].layout, {
+      'text-letter-spacing': 0.15,
+      'text-field': [
+        'coalesce',
+        ['get', 'name_es'],
+        ['get', 'name']
+      ]
+    }, 'wrap unwrapped get expression in coalesce');
+    t.end();
+  });
+
   test('setLanguage for different text fields', (t) => {
     var language = new MapboxLanguage();
     var layers = [{
@@ -53,7 +80,7 @@ test('MapboxLanguage', (t) => {
         ]
       }
     }];
-    var style = makeStyle(layers, 'v11');
+    var style = makeStyle(layers);
 
     var esStyle = language.setLanguage(style, 'es');
     t.deepEqual(esStyle.layers[0].layout, {
@@ -116,7 +143,7 @@ test('MapboxLanguage', (t) => {
       }
     }];
 
-    var style = makeStyle(layers, 'v11');
+    var style = makeStyle(layers);
 
     var esStyle = language.setLanguage(style, 'es');
     t.deepEqual(esStyle.layers[0].layout, {

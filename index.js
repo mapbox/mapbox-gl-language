@@ -113,8 +113,14 @@ function noSpacing(style) {
   });
 }
 
+const isTokenField = /^\{name/;
 function isFlatExpressionField(isLangField, property) {
-  return Array.isArray(property) && property[0] === 'get' && isLangField.test(property[1]);
+  const isGetExpression = Array.isArray(property) && property[0] === 'get';
+  if (isGetExpression && isTokenField.test(property[1])) {
+    console.warn('This plugin no longer supports the use of token syntax (e.g. {name}). Please use a get expression. See https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/ for more details.');
+  }
+
+  return isGetExpression && isLangField.test(property[1]);
 }
 
 function adaptNestedExpressionField(isLangField, property, languageFieldName) {
@@ -136,6 +142,13 @@ function adaptPropertyLanguage(isLangField, property, languageFieldName) {
   }
 
   adaptNestedExpressionField(isLangField, property, languageFieldName);
+
+  // handle special case of bare ['get', 'name'] expression by wrapping it in a coalesce statement
+  if (property[0] === 'get' && property[1] === 'name') {
+    const defaultProp = property.slice();
+    const adaptedProp = ['get', languageFieldName];
+    property = ['coalesce', adaptedProp, defaultProp];
+  }
 
   return property;
 }
