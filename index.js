@@ -4,18 +4,18 @@
  * As of Mapbox GL Language v1.0.0, this plugin no longer supports token values (e.g. `{name}`). v1.0+ expects the `text-field`
  * property of a style to use an [expression](https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/) of the form `['get', 'name_en']` or `['get', 'name']`; these expressions can be nested. Note that `get` expressions used as inputs to other expressions may not be handled by this plugin. For example:
  * ```
- * ["match", 
- *   ["get", "name"], 
- *   "California", 
- *   "Golden State", 
- *   ["coalesce", 
- *     ["get", "name_en"], 
+ * ["match",
+ *   ["get", "name"],
+ *   "California",
+ *   "Golden State",
+ *   ["coalesce",
+ *     ["get", "name_en"],
  *     ["get", "name"]
  *   ]
  * ]
  * ```
  * Only styles based on [Mapbox v8 styles](https://docs.mapbox.com/help/troubleshooting/streets-v8-migration-guide/) are supported.
- * 
+ *
  * @constructor
  * @param {object} options - Options to configure the plugin.
  * @param {string[]} [options.supportedLanguages] - List of supported languages
