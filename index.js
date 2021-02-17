@@ -31,9 +31,9 @@ function MapboxLanguage(options) {
   this.supportedLanguages = options.supportedLanguages || ['ar', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'mul', 'pt', 'ru', 'vi', 'zh-Hans', 'zh-Hant'];
 }
 
-var isTokenField = /^\{name/;
+const isTokenField = /^\{name/;
 function isFlatExpressionField(isLangField, property) {
-  var isGetExpression = Array.isArray(property) && property[0] === 'get';
+  const isGetExpression = Array.isArray(property) && property[0] === 'get';
   if (isGetExpression && isTokenField.test(property[1])) {
     console.warn('This plugin no longer supports the use of token syntax (e.g. {name}). Please use a get expression. See https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/ for more details.');
   }
@@ -63,8 +63,8 @@ function adaptPropertyLanguage(isLangField, property, languageFieldName) {
 
   // handle special case of bare ['get', 'name'] expression by wrapping it in a coalesce statement
   if (property[0] === 'get' && property[1] === 'name') {
-    var defaultProp = property.slice();
-    var adaptedProp = ['get', languageFieldName];
+    const defaultProp = property.slice();
+    const adaptedProp = ['get', languageFieldName];
     property = ['coalesce', adaptedProp, defaultProp];
   }
 
@@ -83,8 +83,8 @@ function changeLayerTextProperty(isLangField, layer, languageFieldName, excluded
 }
 
 function findStreetsSource(style) {
-  var sources = Object.keys(style.sources).filter(function (sourceName) {
-    var url = style.sources[sourceName].url;
+  const sources = Object.keys(style.sources).filter((sourceName) => {
+    const url = style.sources[sourceName].url;
     // the source URL can reference the source version or the style version
     // this check and the error forces users to migrate to styles using source version 8
     return url && url.indexOf('mapbox.mapbox-streets-v8') > -1 || /mapbox-streets-v[1-9][1-9]/.test(url);
@@ -100,19 +100,19 @@ function findStreetsSource(style) {
  * @returns {object} the modified style
  */
 MapboxLanguage.prototype.setLanguage = function (style, language) {
-  if (this.supportedLanguages.indexOf(language) < 0) throw new Error('Language ' + language + ' is not supported');
-  var streetsSource = this._languageSource || findStreetsSource(style);
+  if (this.supportedLanguages.indexOf(language) < 0) throw new Error(`Language ${  language  } is not supported`);
+  const streetsSource = this._languageSource || findStreetsSource(style);
   if (!streetsSource) return style;
 
-  var field = this._getLanguageField(language);
-  var isLangField = this._isLanguageField;
-  var excludedLayerIds = this._excludedLayerIds;
-  var changedLayers = style.layers.map(function (layer) {
+  const field = this._getLanguageField(language);
+  const isLangField = this._isLanguageField;
+  const excludedLayerIds = this._excludedLayerIds;
+  const changedLayers = style.layers.map((layer) => {
     if (layer.source === streetsSource) return changeLayerTextProperty(isLangField, layer, field, excludedLayerIds);
     return layer;
   });
 
-  var languageStyle = Object.assign({}, style, {
+  const languageStyle = Object.assign({}, style, {
     layers: changedLayers
   });
 
@@ -120,16 +120,22 @@ MapboxLanguage.prototype.setLanguage = function (style, language) {
 };
 
 MapboxLanguage.prototype._initialStyleUpdate = function () {
-  var style = this._map.getStyle();
-  var language = this._defaultLanguage || browserLanguage(this.supportedLanguages);
+  const style = this._map.getStyle();
+  const language = this._defaultLanguage || browserLanguage(this.supportedLanguages);
 
   this._map.setStyle(this.setLanguage(style, language));
 };
 
 function browserLanguage(supportedLanguages) {
+<<<<<<< HEAD
   var language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
   var parts = language && language.split('-');
   var languageCode = language;
+=======
+  const language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+  const parts = language.split('-');
+  let languageCode = language;
+>>>>>>> 7e146a7 (Prepare a new release)
   if (parts.length > 1) {
     languageCode = parts[0];
   }

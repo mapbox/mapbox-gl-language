@@ -1,10 +1,10 @@
 {
   "name": "@mapbox/mapbox-gl-language",
-  "version": "0.10.1",
-  "description": "Mapbox GL JS plugin for switching language to the browser language.",
+  "version": "1.0.0",
+  "description": "Mapbox GL JS plugin for switching map language to the browser language.",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint lib && eslint index.js test/*.js",
+    "lint": "eslint index.js test/*.js",
     "pretest": "npm run lint",
     "test": "nyc tape test/*.test.js | tap-spec",
     "docs": "documentation readme index.js --section API"
@@ -27,18 +27,15 @@
   },
   "homepage": "https://github.com/mapbox/mapbox-gl-language#readme",
   "devDependencies": {
-    "browserify": "^16.2.3",
-    "documentation": "^11.0.0",
-    "eslint": "^3.19.0",
-    "eslint-config-mourner": "^2.0.1",
-    "nyc": "^14.1.1",
+    "documentation": "^13.1.1",
+    "eslint": "^7.20.0",
+    "eslint-config-mourner": "^3.0.0",
+    "nyc": "^15.1.0",
     "tap-spec": "^5.0.0",
-    "tape": "^4.6.3",
-    "uglify-js": "^2.4.24",
-    "watchify": "^3.9.0"
+    "tape": "^5.1.1"
   },
   "peerDependencies": {
-    "mapbox-gl": ">=0.29.0 <2.0.0"
+    "mapbox-gl": ">=0.29.0"
   },
   "eslintConfig": {
     "parserOptions": {
