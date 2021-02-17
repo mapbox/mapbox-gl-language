@@ -74,8 +74,8 @@ property of a style to use an [expression](https://docs.mapbox.com/mapbox-gl-js/
 ```
 ["match", 
   ["get", "name"], 
-  "Canada", 
-  "America's Hat", 
+  "California", 
+  "Golden State", 
   ["coalesce", 
     ["get", "name_en"], 
     ["get", "name"]
