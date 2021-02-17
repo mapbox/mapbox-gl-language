@@ -5,7 +5,7 @@
  * @param {object} options - Options to configure the plugin.
  * @param {string[]} [options.supportedLanguages] - List of supported languages
  * @param {Function} [options.languageTransform] - Custom style transformation to apply
- * @param {RegExp} [options.languageField=/^\{name/] - RegExp to match if a text-field is a language field
+ * @param {RegExp} [options.languageField=/^name_/] - RegExp to match if a text-field is a language field
  * @param {Function} [options.getLanguageField] - Given a language choose the field in the vector tiles
  * @param {string} [options.languageSource] - Name of the source that contains the different languages.
  * @param {string} [options.defaultLanguage] - Name of the default language to initialize style after loading.
@@ -21,9 +21,9 @@ function MapboxLanguage(options) {
   this._initialStyleUpdate = this._initialStyleUpdate.bind(this);
 
   this._defaultLanguage = options.defaultLanguage;
-  this._isLanguageField = options.languageField || /^\{name/;
+  this._isLanguageField = options.languageField || /^name_/;
   this._getLanguageField = options.getLanguageField || function nameField(language) {
-    return language === 'mul' ? '{name}' : '{name_' + language + '}';
+    return language === 'mul' ? 'name' : `name_${language}`;
   };
   this._languageSource = options.languageSource || null;
   this._languageTransform = options.languageTransform || function (style, language) {
@@ -34,7 +34,7 @@ function MapboxLanguage(options) {
     }
   };
   this._excludedLayerIds = options.excludedLayerIds || [];
-  this.supportedLanguages = options.supportedLanguages || ['ar', 'en', 'es', 'fr', 'de', 'ja', 'ko', 'mul', 'pt', 'ru', 'zh'];
+  this.supportedLanguages = options.supportedLanguages || ['ar', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'mul', 'pt', 'ru', 'zh-Hans', 'zh-Hant'];
 }
 
 function standardSpacing(style) {
@@ -113,29 +113,43 @@ function noSpacing(style) {
   });
 }
 
-function isNameStringField(isLangField, property) {
-  return typeof property === 'string' && isLangField.test(property);
+var isTokenField = /^\{name/;
+function isFlatExpressionField(isLangField, property) {
+  var isGetExpression = Array.isArray(property) && property[0] === 'get';
+  if (isGetExpression && isTokenField.test(property[1])) {
+    console.warn('This plugin no longer supports the use of token syntax (e.g. {name}). Please use a get expression. See https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/ for more details.');
+  }
+
+  return isGetExpression && isLangField.test(property[1]);
 }
 
-function isNameFunctionField(isLangField, property) {
-  return property.stops && property.stops.filter(function (stop) {
-    return isLangField.test(stop[1]);
-  }).length > 0;
+function adaptNestedExpressionField(isLangField, property, languageFieldName) {
+  if (Array.isArray(property)) {
+    for (let i = 1; i < property.length; i++) {
+      if (Array.isArray(property[i])) {
+        if (isFlatExpressionField(isLangField, property[i])) {
+          property[i][1] = languageFieldName;
+        }
+        adaptNestedExpressionField(isLangField, property[i], languageFieldName);
+      }
+    }
+  }
 }
 
 function adaptPropertyLanguage(isLangField, property, languageFieldName) {
-  if (isNameStringField(isLangField, property)) return languageFieldName;
-  if (isNameFunctionField(isLangField, property)) {
-    var newStops = property.stops.map(function (stop) {
-      if (isLangField.test(stop[1])) {
-        return [stop[0], languageFieldName];
-      }
-      return stop;
-    });
-    return Object.assign({}, property, {
-      stops: newStops
-    });
+  if (isFlatExpressionField(isLangField, property)) {
+    property[1] = languageFieldName;
   }
+
+  adaptNestedExpressionField(isLangField, property, languageFieldName);
+
+  // handle special case of bare ['get', 'name'] expression by wrapping it in a coalesce statement
+  if (property[0] === 'get' && property[1] === 'name') {
+    var defaultProp = property.slice();
+    var adaptedProp = ['get', languageFieldName];
+    property = ['coalesce', adaptedProp, defaultProp];
+  }
+
   return property;
 }
 
@@ -152,9 +166,12 @@ function changeLayerTextProperty(isLangField, layer, languageFieldName, excluded
 
 function findStreetsSource(style) {
   var sources = Object.keys(style.sources).filter(function (sourceName) {
-    var source = style.sources[sourceName];
-    return /mapbox-streets-v\d/.test(source.url);
+    var url = style.sources[sourceName].url;
+    // the source URL can reference the source version or the style version
+    // this check and the error forces users to migrate to styles using source version 8
+    return url && url.indexOf('mapbox.mapbox-streets-v8') > -1 || /mapbox-streets-v[1-9][1-9]/.test(url);
   });
+  if (!sources.length) throw new Error('If using MapboxLanguage with a Mapbox style, the style must be based on vector tile version 8, e.g. "streets-v11"');
   return sources[0];
 }
 
@@ -218,43 +235,8 @@ MapboxLanguage.prototype.onRemove = function () {
   this._map = undefined;
 };
 
-function ie11Polyfill() {
-  if (typeof Object.assign != 'function') {
-    // Must be writable: true, enumerable: false, configurable: true
-    Object.defineProperty(Object, 'assign', {
-      // eslint-disable-next-line no-unused-vars
-      value: function assign(target, varArgs) { // .length of function is 2
-        // eslint-disable-next-line strict
-        'use strict';
-        if (target === null) { // TypeError if undefined or null
-          throw new TypeError('Cannot convert undefined or null to object');
-        }
-
-        var to = Object(target);
-
-        for (var index = 1; index < arguments.length; index++) {
-          var nextSource = arguments[index];
-
-          if (nextSource !== null) { // Skip over if undefined or null
-            for (var nextKey in nextSource) {
-              // Avoid bugs when hasOwnProperty is shadowed
-              if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
-                to[nextKey] = nextSource[nextKey];
-              }
-            }
-          }
-        }
-        return to;
-      },
-      writable: true,
-      configurable: true
-    });
-  }
-}
-
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
   module.exports = MapboxLanguage;
 } else {
-  ie11Polyfill();
   window.MapboxLanguage = MapboxLanguage;
 }
