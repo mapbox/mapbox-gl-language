@@ -17,9 +17,9 @@ _Switch language based on user agent_
 **mapbox-gl-language** is a [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that you can easily add on top of your map.
 
 **When using a CDN**
-```
-    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v1.0.0/mapbox-gl-language.js'></script>
-```
+
+        <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v1.0.0/mapbox-gl-language.js'></script>
+
 **When using modules**
 
 Check [how to use Mapbox GL JS in a module bundler](https://www.mapbox.com/mapbox-gl-js/api/).
@@ -68,20 +68,19 @@ Check `examples/` for more usage examples.
 
 Create a new [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that
 modifies the layers of the map style to use the `text-field` that matches the browser language.
-
 As of Mapbox GL Language v1.0.0, this plugin no longer supports token values (e.g. `{name}`). v1.0+ expects the `text-field`
 property of a style to use an [expression](https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/) of the form `['get', 'name_en']` or `['get', 'name']`; these expressions can be nested. Note that `get` expressions used as inputs to other expressions may not be handled by this plugin. For example:
-```
-["match", 
-  ["get", "name"], 
-  "California", 
-  "Golden State", 
-  ["coalesce", 
-    ["get", "name_en"], 
-    ["get", "name"]
-  ]
-]
-```
+
+    ["match", 
+      ["get", "name"], 
+      "California", 
+      "Golden State", 
+      ["coalesce", 
+        ["get", "name_en"], 
+        ["get", "name"]
+      ]
+    ]
+
 Only styles based on [Mapbox v8 styles](https://docs.mapbox.com/help/troubleshooting/streets-v8-migration-guide/) are supported.
 
 #### Parameters
@@ -89,7 +88,7 @@ Only styles based on [Mapbox v8 styles](https://docs.mapbox.com/help/troubleshoo
 -   `options` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options to configure the plugin.
     -   `options.supportedLanguages` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** List of supported languages
     -   `options.languageTransform` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** Custom style transformation to apply
-    -   `options.languageField` **[RegExp](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp)** RegExp to match if a text-field is a language field (optional, default `/^name_/`). Note that as of Mapbox GL Language v1.0.0, token values (e.g. `{name}`) are no longer supported.
+    -   `options.languageField` **[RegExp](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp)** RegExp to match if a text-field is a language field (optional, default `/^name_/`)
     -   `options.getLanguageField` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** Given a language choose the field in the vector tiles
     -   `options.languageSource` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Name of the source that contains the different languages.
     -   `options.defaultLanguage` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Name of the default language to initialize style after loading.
