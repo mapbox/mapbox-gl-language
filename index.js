@@ -34,7 +34,7 @@ function MapboxLanguage(options) {
     }
   };
   this._excludedLayerIds = options.excludedLayerIds || [];
-  this.supportedLanguages = options.supportedLanguages || ['ar', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'mul', 'pt', 'ru', 'zh-Hans', 'zh-Hant'];
+  this.supportedLanguages = options.supportedLanguages || ['ar', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'mul', 'pt', 'ru', 'vi', 'zh-Hans', 'zh-Hant'];
 }
 
 function standardSpacing(style) {
