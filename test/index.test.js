@@ -1,5 +1,5 @@
-var test = require('tape');
-var MapboxLanguage = require('../index');
+const test = require('tape');
+const MapboxLanguage = require('../index');
 
 function makeStyle(layers, version) {
   if (!version) version = 'v11';
@@ -17,8 +17,8 @@ function makeStyle(layers, version) {
 test('MapboxLanguage', (t) => {
 
   test('non-v8-based styles', (t) => {
-    var language = new MapboxLanguage();
-    var layers = [{
+    const language = new MapboxLanguage();
+    const layers = [{
       'id': 'state-label-sm',
       'source': 'composite',
       'source-layer': 'state_label',
@@ -31,8 +31,8 @@ test('MapboxLanguage', (t) => {
         ]
       }
     }];
-    var style = makeStyle(layers, 'v10');
-    var err = new Error('If using MapboxLanguage with a Mapbox style, the style must be based on vector tile version 8, e.g. "streets-v11"');
+    const style = makeStyle(layers, 'v10');
+    const err = new Error('If using MapboxLanguage with a Mapbox style, the style must be based on vector tile version 8, e.g. "streets-v11"');
     t.throws(() => {
       language.setLanguage(style, 'es');
     }, err.toString());
@@ -40,8 +40,8 @@ test('MapboxLanguage', (t) => {
   });
 
   test('unwrapped get expression styles', (t) => {
-    var language = new MapboxLanguage();
-    var layers = [{
+    const language = new MapboxLanguage();
+    const layers = [{
       'id': 'state-label-sm',
       'source': 'composite',
       'source-layer': 'state_label',
@@ -50,10 +50,9 @@ test('MapboxLanguage', (t) => {
         'text-field': ['get', 'name']
       }
     }];
-    var style = makeStyle(layers);
+    const style = makeStyle(layers);
 
-    var esStyle = language.setLanguage(style, 'es');
-    console.log('esStyle: ', esStyle);
+    const esStyle = language.setLanguage(style, 'es');
     t.deepEqual(esStyle.layers[0].layout, {
       'text-letter-spacing': 0.15,
       'text-field': [
@@ -66,8 +65,8 @@ test('MapboxLanguage', (t) => {
   });
 
   test('setLanguage for different text fields', (t) => {
-    var language = new MapboxLanguage();
-    var layers = [{
+    const language = new MapboxLanguage();
+    const layers = [{
       'id': 'state-label-sm',
       'source': 'composite',
       'source-layer': 'state_label',
@@ -80,9 +79,9 @@ test('MapboxLanguage', (t) => {
         ]
       }
     }];
-    var style = makeStyle(layers);
+    const style = makeStyle(layers);
 
-    var esStyle = language.setLanguage(style, 'es');
+    const esStyle = language.setLanguage(style, 'es');
     t.deepEqual(esStyle.layers[0].layout, {
       'text-letter-spacing': 0.15,
       'text-field': [
@@ -92,7 +91,7 @@ test('MapboxLanguage', (t) => {
       ]
     }, 'switch style to spanish name field');
 
-    var arStyle = language.setLanguage(style, 'ar');
+    const arStyle = language.setLanguage(style, 'ar');
     t.deepEqual(arStyle.layers[0].layout, {
       'text-letter-spacing': 0,
       'text-field': [
@@ -102,7 +101,7 @@ test('MapboxLanguage', (t) => {
       ]
     }, 'switch style to arabic name field');
 
-    var mulStyle = language.setLanguage(style, 'mul');
+    const mulStyle = language.setLanguage(style, 'mul');
     t.deepEqual(mulStyle.layers[0].layout, {
       'text-letter-spacing': 0.15,
       'text-field': [
@@ -116,8 +115,8 @@ test('MapboxLanguage', (t) => {
   });
 
   test('setLanguage with excluded layers', (t) => {
-    var language = new MapboxLanguage({excludedLayerIds: ['state-label-lg']});
-    var layers = [{
+    const language = new MapboxLanguage({excludedLayerIds: ['state-label-lg']});
+    const layers = [{
       'id': 'state-label-sm',
       'source': 'composite',
       'source-layer': 'state_label',
@@ -143,9 +142,9 @@ test('MapboxLanguage', (t) => {
       }
     }];
 
-    var style = makeStyle(layers);
+    const style = makeStyle(layers);
 
-    var esStyle = language.setLanguage(style, 'es');
+    const esStyle = language.setLanguage(style, 'es');
     t.deepEqual(esStyle.layers[0].layout, {
       'text-letter-spacing': 0.15,
       'text-field': [

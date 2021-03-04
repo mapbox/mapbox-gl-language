@@ -1,6 +1,21 @@
 /**
  * Create a new [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that
- * modifies the layers of the map style to use the 'text-field' that matches the browser language.
+ * modifies the layers of the map style to use the `text-field` that matches the browser language.
+ * As of Mapbox GL Language v1.0.0, this plugin no longer supports token values (e.g. `{name}`). v1.0+ expects the `text-field`
+ * property of a style to use an [expression](https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/) of the form `['get', 'name_en']` or `['get', 'name']`; these expressions can be nested. Note that `get` expressions used as inputs to other expressions may not be handled by this plugin. For example:
+ * ```
+ * ["match",
+ *   ["get", "name"],
+ *   "California",
+ *   "Golden State",
+ *   ["coalesce",
+ *     ["get", "name_en"],
+ *     ["get", "name"]
+ *   ]
+ * ]
+ * ```
+ * Only styles based on [Mapbox v8 styles](https://docs.mapbox.com/help/troubleshooting/streets-v8-migration-guide/) are supported.
+ *
  * @constructor
  * @param {object} options - Options to configure the plugin.
  * @param {string[]} [options.supportedLanguages] - List of supported languages
@@ -38,9 +53,9 @@ function MapboxLanguage(options) {
 }
 
 function standardSpacing(style) {
-  var changedLayers = style.layers.map(function (layer) {
+  const changedLayers = style.layers.map((layer) => {
     if (!(layer.layout || {})['text-field']) return layer;
-    var spacing = 0;
+    let spacing = 0;
     if (layer['source-layer'] === 'state_label') {
       spacing = 0.15;
     }
@@ -98,9 +113,9 @@ function standardSpacing(style) {
 }
 
 function noSpacing(style) {
-  var changedLayers = style.layers.map(function (layer) {
+  const changedLayers = style.layers.map((layer) => {
     if (!(layer.layout || {})['text-field']) return layer;
-    var spacing = 0;
+    const spacing = 0;
     return Object.assign({}, layer, {
       layout: Object.assign({}, layer.layout, {
         'text-letter-spacing': spacing
@@ -113,9 +128,9 @@ function noSpacing(style) {
   });
 }
 
-var isTokenField = /^\{name/;
+const isTokenField = /^\{name/;
 function isFlatExpressionField(isLangField, property) {
-  var isGetExpression = Array.isArray(property) && property[0] === 'get';
+  const isGetExpression = Array.isArray(property) && property[0] === 'get';
   if (isGetExpression && isTokenField.test(property[1])) {
     console.warn('This plugin no longer supports the use of token syntax (e.g. {name}). Please use a get expression. See https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/ for more details.');
   }
@@ -145,8 +160,8 @@ function adaptPropertyLanguage(isLangField, property, languageFieldName) {
 
   // handle special case of bare ['get', 'name'] expression by wrapping it in a coalesce statement
   if (property[0] === 'get' && property[1] === 'name') {
-    var defaultProp = property.slice();
-    var adaptedProp = ['get', languageFieldName];
+    const defaultProp = property.slice();
+    const adaptedProp = ['get', languageFieldName];
     property = ['coalesce', adaptedProp, defaultProp];
   }
 
@@ -165,8 +180,8 @@ function changeLayerTextProperty(isLangField, layer, languageFieldName, excluded
 }
 
 function findStreetsSource(style) {
-  var sources = Object.keys(style.sources).filter(function (sourceName) {
-    var url = style.sources[sourceName].url;
+  const sources = Object.keys(style.sources).filter((sourceName) => {
+    const url = style.sources[sourceName].url;
     // the source URL can reference the source version or the style version
     // this check and the error forces users to migrate to styles using source version 8
     return url && url.indexOf('mapbox.mapbox-streets-v8') > -1 || /mapbox-streets-v[1-9][1-9]/.test(url);
@@ -182,19 +197,19 @@ function findStreetsSource(style) {
  * @returns {object} the modified style
  */
 MapboxLanguage.prototype.setLanguage = function (style, language) {
-  if (this.supportedLanguages.indexOf(language) < 0) throw new Error('Language ' + language + ' is not supported');
-  var streetsSource = this._languageSource || findStreetsSource(style);
+  if (this.supportedLanguages.indexOf(language) < 0) throw new Error(`Language ${  language  } is not supported`);
+  const streetsSource = this._languageSource || findStreetsSource(style);
   if (!streetsSource) return style;
 
-  var field = this._getLanguageField(language);
-  var isLangField = this._isLanguageField;
-  var excludedLayerIds = this._excludedLayerIds;
-  var changedLayers = style.layers.map(function (layer) {
+  const field = this._getLanguageField(language);
+  const isLangField = this._isLanguageField;
+  const excludedLayerIds = this._excludedLayerIds;
+  const changedLayers = style.layers.map((layer) => {
     if (layer.source === streetsSource) return changeLayerTextProperty(isLangField, layer, field, excludedLayerIds);
     return layer;
   });
 
-  var languageStyle = Object.assign({}, style, {
+  const languageStyle = Object.assign({}, style, {
     layers: changedLayers
   });
 
@@ -202,8 +217,8 @@ MapboxLanguage.prototype.setLanguage = function (style, language) {
 };
 
 MapboxLanguage.prototype._initialStyleUpdate = function () {
-  var style = this._map.getStyle();
-  var language = this._defaultLanguage || browserLanguage(this.supportedLanguages);
+  const style = this._map.getStyle();
+  const language = this._defaultLanguage || browserLanguage(this.supportedLanguages);
 
   // We only update the style once
   this._map.off('styledata', this._initialStyleUpdate);
@@ -211,9 +226,9 @@ MapboxLanguage.prototype._initialStyleUpdate = function () {
 };
 
 function browserLanguage(supportedLanguages) {
-  var language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
-  var parts = language.split('-');
-  var languageCode = language;
+  const language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+  const parts = language.split('-');
+  let languageCode = language;
   if (parts.length > 1) {
     languageCode = parts[0];
   }
