@@ -94,7 +94,7 @@ test('MapboxLanguage', (t) => {
 
     var arStyle = language.setLanguage(style, 'ar');
     t.deepEqual(arStyle.layers[0].layout, {
-      'text-letter-spacing': 0,
+      'text-letter-spacing': 0.15,
       'text-field': [
         'coalesce',
         ['get', 'name_ar'],

@@ -26,91 +26,9 @@ function MapboxLanguage(options) {
     return language === 'mul' ? 'name' : `name_${language}`;
   };
   this._languageSource = options.languageSource || null;
-  this._languageTransform = options.languageTransform || function (style, language) {
-    if (language === 'ar') {
-      return noSpacing(style);
-    } else {
-      return standardSpacing(style);
-    }
-  };
+  this._languageTransform = options.languageTransform;
   this._excludedLayerIds = options.excludedLayerIds || [];
   this.supportedLanguages = options.supportedLanguages || ['ar', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'mul', 'pt', 'ru', 'zh-Hans', 'zh-Hant'];
-}
-
-function standardSpacing(style) {
-  var changedLayers = style.layers.map(function (layer) {
-    if (!(layer.layout || {})['text-field']) return layer;
-    var spacing = 0;
-    if (layer['source-layer'] === 'state_label') {
-      spacing = 0.15;
-    }
-    if (layer['source-layer'] === 'marine_label') {
-      if (/-lg/.test(layer.id)) {
-        spacing = 0.25;
-      }
-      if (/-md/.test(layer.id)) {
-        spacing = 0.15;
-      }
-      if (/-sm/.test(layer.id)) {
-        spacing = 0.1;
-      }
-    }
-    if (layer['source-layer'] === 'place_label') {
-      if (/-suburb/.test(layer.id)) {
-        spacing = 0.15;
-      }
-      if (/-neighbour/.test(layer.id)) {
-        spacing = 0.1;
-      }
-      if (/-islet/.test(layer.id)) {
-        spacing = 0.01;
-      }
-    }
-    if (layer['source-layer'] === 'airport_label') {
-      spacing = 0.01;
-    }
-    if (layer['source-layer'] === 'rail_station_label') {
-      spacing = 0.01;
-    }
-    if (layer['source-layer'] === 'poi_label') {
-      if (/-scalerank/.test(layer.id)) {
-        spacing = 0.01;
-      }
-    }
-    if (layer['source-layer'] === 'road_label') {
-      if (/-label-/.test(layer.id)) {
-        spacing = 0.01;
-      }
-      if (/-shields/.test(layer.id)) {
-        spacing = 0.05;
-      }
-    }
-    return Object.assign({}, layer, {
-      layout: Object.assign({}, layer.layout, {
-        'text-letter-spacing': spacing
-      })
-    });
-  });
-
-  return Object.assign({}, style, {
-    layers: changedLayers
-  });
-}
-
-function noSpacing(style) {
-  var changedLayers = style.layers.map(function (layer) {
-    if (!(layer.layout || {})['text-field']) return layer;
-    var spacing = 0;
-    return Object.assign({}, layer, {
-      layout: Object.assign({}, layer.layout, {
-        'text-letter-spacing': spacing
-      })
-    });
-  });
-
-  return Object.assign({}, style, {
-    layers: changedLayers
-  });
 }
 
 var isTokenField = /^\{name/;
@@ -198,7 +116,7 @@ MapboxLanguage.prototype.setLanguage = function (style, language) {
     layers: changedLayers
   });
 
-  return this._languageTransform(languageStyle, language);
+  return this._languageTransform ? this._languageTransform(languageStyle, language) : languageStyle;
 };
 
 MapboxLanguage.prototype._initialStyleUpdate = function () {
