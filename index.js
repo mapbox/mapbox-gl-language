@@ -212,7 +212,7 @@ MapboxLanguage.prototype._initialStyleUpdate = function () {
 
 function browserLanguage(supportedLanguages) {
   var language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
-  var parts = language.split('-');
+  var parts = language && language.split('-');
   var languageCode = language;
   if (parts.length > 1) {
     languageCode = parts[0];
