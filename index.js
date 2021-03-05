@@ -205,8 +205,6 @@ MapboxLanguage.prototype._initialStyleUpdate = function () {
   var style = this._map.getStyle();
   var language = this._defaultLanguage || browserLanguage(this.supportedLanguages);
 
-  // We only update the style once
-  this._map.off('styledata', this._initialStyleUpdate);
   this._map.setStyle(this.setLanguage(style, language));
 };
 
@@ -225,13 +223,13 @@ function browserLanguage(supportedLanguages) {
 
 MapboxLanguage.prototype.onAdd = function (map) {
   this._map = map;
-  this._map.on('styledata', this._initialStyleUpdate);
+  this._map.on('style.load', this._initialStyleUpdate);
   this._container = document.createElement('div');
   return this._container;
 };
 
 MapboxLanguage.prototype.onRemove = function () {
-  this._map.off('styledata', this._initialStyleUpdate);
+  this._map.off('style.load', this._initialStyleUpdate);
   this._map = undefined;
 };
 
