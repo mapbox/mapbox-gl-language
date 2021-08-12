@@ -28,7 +28,7 @@ function MapboxLanguage(options) {
   this._languageSource = options.languageSource || null;
   this._languageTransform = options.languageTransform;
   this._excludedLayerIds = options.excludedLayerIds || [];
-  this.supportedLanguages = options.supportedLanguages || ['ar', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'mul', 'pt', 'ru', 'zh-Hans', 'zh-Hant'];
+  this.supportedLanguages = options.supportedLanguages || ['ar', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'mul', 'pt', 'ru', 'vi', 'zh-Hans', 'zh-Hant'];
 }
 
 var isTokenField = /^\{name/;
