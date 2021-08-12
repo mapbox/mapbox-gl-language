@@ -142,15 +142,9 @@ MapboxLanguage.prototype._initialStyleUpdate = function () {
 };
 
 function browserLanguage(supportedLanguages) {
-<<<<<<< HEAD
   var language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
   var parts = language && language.split('-');
   var languageCode = language;
-=======
-  const language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
-  const parts = language.split('-');
-  let languageCode = language;
->>>>>>> 7e146a7 (Prepare a new release)
   if (parts.length > 1) {
     languageCode = parts[0];
   }
