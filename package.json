@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mapbox/mapbox-gl-language.git"
+    "url": "https://github.com/mapbox/mapbox-gl-language.git"
   },
   "keywords": [
     "mapbox",
@@ -27,12 +27,12 @@
   },
   "homepage": "https://github.com/mapbox/mapbox-gl-language#readme",
   "devDependencies": {
-    "documentation": "^13.1.1",
-    "eslint": "^7.20.0",
+    "documentation": "^13.2.5",
+    "eslint": "^7.32.0",
     "eslint-config-mourner": "^3.0.0",
     "nyc": "^15.1.0",
     "tap-spec": "^5.0.0",
-    "tape": "^5.2.2"
+    "tape": "^5.3.1"
   },
   "peerDependencies": {
     "mapbox-gl": ">=0.29.0"
