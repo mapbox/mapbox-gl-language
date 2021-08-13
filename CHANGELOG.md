@@ -24,7 +24,6 @@
 - Add support for Mapbox GL JS v2.0.0+. ([#42](https://github.com/mapbox/mapbox-gl-language/pull/42))
 - Add support for Vietnamese `vi`. ([#43](https://github.com/mapbox/mapbox-gl-language/pull/43))
 
-
 ### Bug fixes
 
 - Remove unnecessary letter spacing transformations for Arabic. ([#44](https://github.com/mapbox/mapbox-gl-language/pull/44))

@@ -29,8 +29,8 @@ npm install --save mapbox-gl @mapbox/mapbox-gl-language
 ```
 
 ```javascript
-const mapboxgl = require('mapbox-gl')
-const MapboxLanguage = require('@mapbox/mapbox-gl-language');
+import mapboxgl from 'mapbox-gl';
+import MapboxLanguage from '@mapbox/mapbox-gl-language';
 ```
 
 **Example**
