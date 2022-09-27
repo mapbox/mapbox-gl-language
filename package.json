@@ -27,12 +27,12 @@
   },
   "homepage": "https://github.com/mapbox/mapbox-gl-language#readme",
   "devDependencies": {
-    "documentation": "^13.2.5",
-    "eslint": "^7.32.0",
+    "documentation": "^14.0.0",
+    "eslint": "^8.24.0",
     "eslint-config-mourner": "^3.0.0",
     "nyc": "^15.1.0",
     "tap-spec": "^5.0.0",
-    "tape": "^5.3.1"
+    "tape": "^5.6.1"
   },
   "peerDependencies": {
     "mapbox-gl": ">=0.29.0"
