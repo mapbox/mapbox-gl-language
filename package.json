@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Mapbox GL JS plugin for switching map language to the browser language.",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "lint": "eslint index.js test/*.js",
     "pretest": "npm run lint",
@@ -38,6 +39,9 @@
     "mapbox-gl": ">=0.29.0"
   },
   "eslintConfig": {
+    "ignorePatterns": [
+      "*.d.ts"
+    ],
     "parserOptions": {
       "sourceType": "module"
     },
