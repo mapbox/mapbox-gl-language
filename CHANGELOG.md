@@ -1,3 +1,9 @@
+## 1.0.1
+
+### Features and improvements
+
+- Add TypeScript types. ([#58](https://github.com/mapbox/mapbox-gl-language/pull/58) h/t @Phillip9587)
+
 ## 1.0.0
 
 ### ⚠️ Breaking changes
@@ -7,12 +13,12 @@
 - Support for Streets v7 Chinese `zh` is replaced with Traditional Chinese `zh-Hant` and Simplified Chinese `zh-Hans`. ([#39](https://github.com/mapbox/mapbox-gl-language/pull/39))
 - Support for token values (e.g. `{name}`) has been removed. The plugin now expects the `text-field` property of a style to use an [expression](https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/) of the form `['get', 'name_en']` or `['get', 'name']`; these expressions can be nested. Note that `get` expressions used as inputs to other expressions may not be handled by this plugin. For example:
 ```
-["match", 
-  ["get", "name"], 
-  "California", 
-  "Golden State", 
-  ["coalesce", 
-    ["get", "name_en"], 
+["match",
+  ["get", "name"],
+  "California",
+  "Golden State",
+  ["coalesce",
+    ["get", "name_en"],
     ["get", "name"]
   ]
 ]
