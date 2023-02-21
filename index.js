@@ -156,7 +156,11 @@ function browserLanguage(supportedLanguages) {
 
 MapboxLanguage.prototype.onAdd = function (map) {
   this._map = map;
-  this._map.on('style.load', this._initialStyleUpdate);
+  if (this._map.style && this._map.style._loaded) {
+    this._initialStyleUpdate();
+  } else {
+    this._map.on('style.load', this._initialStyleUpdate);
+  }
   this._container = document.createElement('div');
   return this._container;
 };
