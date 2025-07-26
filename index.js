@@ -1,5 +1,5 @@
 /* accept values from common locale selectors */
-const SYNONYMS = {
+const ALT_LOCALES = {
   'zh-CN': 'zh-Hans',
   'zh-Hans-CN': 'zh-Hans',
   'zh-HK': 'zh-Hant',
@@ -125,7 +125,7 @@ function findStreetsSource(style) {
  * @returns {object} the modified style
  */
 MapboxLanguage.prototype.setLanguage = function (style, language) {
-  language = SYNONYMS[language] || language;
+  language = ALT_LOCALES[language] || language;
   if (this.supportedLanguages.indexOf(language) < 0) {
     throw new Error(`Language ${  language  } is not supported`);
   }
@@ -156,7 +156,7 @@ MapboxLanguage.prototype._initialStyleUpdate = function () {
 
 function browserLanguage(supportedLanguages) {
   let language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
-  language = SYNONYMS[language] || language;
+  language = ALT_LOCALES[language] || language;
   const parts = language && language.split('-');
   let languageCode = language;
   if (parts.length > 1) {
