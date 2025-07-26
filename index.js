@@ -1,11 +1,8 @@
-/* accept values from common locale selectors */
+/* accept lowercased values from common locale selectors */
 const ALT_LOCALES = {
-  'zh-CN': 'zh-Hans',
-  'zh-Hans-CN': 'zh-Hans',
-  'zh-HK': 'zh-Hant',
-  'zh-Hant-HK': 'zh-Hant',
-  'zh-TW': 'zh-Hant',
-  'zh-Hant-TW': 'zh-Hant',
+  'zh-cn': 'zh-Hans',
+  'zh-hk': 'zh-Hant',
+  'zh-tw': 'zh-Hant',
 };
 
 /**
@@ -125,8 +122,11 @@ function findStreetsSource(style) {
  * @returns {object} the modified style
  */
 MapboxLanguage.prototype.setLanguage = function (style, language) {
-  language = ALT_LOCALES[language] || language;
+  language = ALT_LOCALES[language.toLowerCase()] || language;
   if (this.supportedLanguages.indexOf(language) < 0) {
+    if (language.indexOf('-') > -1) {
+      return this.setLanguage(style, language.slice(0, language.lastIndexOf('-')));
+    }
     throw new Error(`Language ${  language  } is not supported`);
   }
   const streetsSource = this._languageSource || findStreetsSource(style);
@@ -154,16 +154,16 @@ MapboxLanguage.prototype._initialStyleUpdate = function () {
   this._map.setStyle(this.setLanguage(style, language));
 };
 
-function browserLanguage(supportedLanguages) {
-  let language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
-  language = ALT_LOCALES[language] || language;
-  const parts = language && language.split('-');
-  let languageCode = language;
-  if (parts.length > 1) {
-    languageCode = parts[0];
+function browserLanguage(supportedLanguages, language) {
+  language = language || (navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage));
+  language = ALT_LOCALES[language.toLowerCase()] || language;
+
+  if (supportedLanguages.indexOf(language) > -1) {
+    return language;
   }
-  if (supportedLanguages.indexOf(languageCode) > -1) {
-    return languageCode;
+  if (language.indexOf('-') > -1) {
+    // reduce longer locales (en-US, zh-Hant-TW) to shorter forms
+    return browserLanguage(supportedLanguages, language.slice(0, language.lastIndexOf('-')));
   }
   return null;
 }
