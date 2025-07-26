@@ -1,3 +1,13 @@
+/* accept values from common locale selectors */
+const SYNONYMS = {
+  'zh-CN': 'zh-Hans',
+  'zh-Hans-CN': 'zh-Hans',
+  'zh-HK': 'zh-Hant',
+  'zh-Hant-HK': 'zh-Hant',
+  'zh-TW': 'zh-Hant',
+  'zh-Hant-TW': 'zh-Hant',
+};
+
 /**
  * Create a new [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that
  * modifies the layers of the map style to use the `text-field` that matches the browser language.
@@ -115,7 +125,10 @@ function findStreetsSource(style) {
  * @returns {object} the modified style
  */
 MapboxLanguage.prototype.setLanguage = function (style, language) {
-  if (this.supportedLanguages.indexOf(language) < 0) throw new Error(`Language ${  language  } is not supported`);
+  language = SYNONYMS[language] || language;
+  if (this.supportedLanguages.indexOf(language) < 0) {
+    throw new Error(`Language ${  language  } is not supported`);
+  }
   const streetsSource = this._languageSource || findStreetsSource(style);
   if (!streetsSource) return style;
 
@@ -142,7 +155,8 @@ MapboxLanguage.prototype._initialStyleUpdate = function () {
 };
 
 function browserLanguage(supportedLanguages) {
-  const language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+  let language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+  language = SYNONYMS[language] || language;
   const parts = language && language.split('-');
   let languageCode = language;
   if (parts.length > 1) {
