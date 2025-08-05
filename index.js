@@ -2,6 +2,8 @@
 const ALT_LOCALES = {
   'zh-cn': 'zh-Hans',
   'zh-hk': 'zh-Hant',
+  'zh-mo': 'zh-Hant',
+  'zh-sg': 'zh-Hans',
   'zh-tw': 'zh-Hant',
 };
 
@@ -123,11 +125,13 @@ function findStreetsSource(style) {
  */
 MapboxLanguage.prototype.setLanguage = function (style, language) {
   language = ALT_LOCALES[language.toLowerCase()] || language;
-  if (this.supportedLanguages.indexOf(language) < 0) {
+
+  while (this.supportedLanguages.indexOf(language) < 0) {
     if (language.indexOf('-') > -1) {
-      return this.setLanguage(style, language.slice(0, language.lastIndexOf('-')));
+      language = language.slice(0, language.lastIndexOf('-'));
+    } else {
+      throw new Error(`Language ${  language  } is not supported`);
     }
-    throw new Error(`Language ${  language  } is not supported`);
   }
   const streetsSource = this._languageSource || findStreetsSource(style);
   if (!streetsSource) return style;
@@ -158,14 +162,15 @@ function browserLanguage(supportedLanguages, language) {
   language = language || (navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage));
   language = ALT_LOCALES[language.toLowerCase()] || language;
 
-  if (supportedLanguages.indexOf(language) > -1) {
-    return language;
+  while (supportedLanguages.indexOf(language) < 0) {
+    if (language.indexOf('-') > -1) {
+      // reduce longer locales (en-US, zh-Hant-TW) to shorter forms
+      language = language.slice(0, language.lastIndexOf('-'));
+    } else {
+      return null;
+    }
   }
-  if (language.indexOf('-') > -1) {
-    // reduce longer locales (en-US, zh-Hant-TW) to shorter forms
-    return browserLanguage(supportedLanguages, language.slice(0, language.lastIndexOf('-')));
-  }
-  return null;
+  return language;
 }
 
 MapboxLanguage.prototype.onAdd = function (map) {
