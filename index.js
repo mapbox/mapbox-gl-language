@@ -158,8 +158,8 @@ MapboxLanguage.prototype._initialStyleUpdate = function () {
   this._map.setStyle(this.setLanguage(style, language));
 };
 
-function browserLanguage(supportedLanguages, language) {
-  language = language || (navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage));
+function browserLanguage(supportedLanguages) {
+  let language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
   language = ALT_LOCALES[language.toLowerCase()] || language;
 
   while (supportedLanguages.indexOf(language) < 0) {
