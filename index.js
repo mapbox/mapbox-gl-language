@@ -1,3 +1,12 @@
+/* accept lowercased values from common locale selectors */
+const ALT_LOCALES = {
+  'zh-cn': 'zh-Hans',
+  'zh-hk': 'zh-Hant',
+  'zh-mo': 'zh-Hant',
+  'zh-sg': 'zh-Hans',
+  'zh-tw': 'zh-Hant',
+};
+
 /**
  * Create a new [Mapbox GL JS plugin](https://www.mapbox.com/blog/build-mapbox-gl-js-plugins/) that
  * modifies the layers of the map style to use the `text-field` that matches the browser language.
@@ -115,7 +124,15 @@ function findStreetsSource(style) {
  * @returns {object} the modified style
  */
 MapboxLanguage.prototype.setLanguage = function (style, language) {
-  if (this.supportedLanguages.indexOf(language) < 0) throw new Error(`Language ${  language  } is not supported`);
+  language = ALT_LOCALES[language.toLowerCase()] || language;
+
+  while (this.supportedLanguages.indexOf(language) < 0) {
+    if (language.indexOf('-') > -1) {
+      language = language.slice(0, language.lastIndexOf('-'));
+    } else {
+      throw new Error(`Language ${  language  } is not supported`);
+    }
+  }
   const streetsSource = this._languageSource || findStreetsSource(style);
   if (!streetsSource) return style;
 
@@ -142,16 +159,18 @@ MapboxLanguage.prototype._initialStyleUpdate = function () {
 };
 
 function browserLanguage(supportedLanguages) {
-  const language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
-  const parts = language && language.split('-');
-  let languageCode = language;
-  if (parts.length > 1) {
-    languageCode = parts[0];
+  let language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+  language = ALT_LOCALES[language.toLowerCase()] || language;
+
+  while (supportedLanguages.indexOf(language) < 0) {
+    if (language.indexOf('-') > -1) {
+      // reduce longer locales (en-US, zh-Hant-TW) to shorter forms
+      language = language.slice(0, language.lastIndexOf('-'));
+    } else {
+      return null;
+    }
   }
-  if (supportedLanguages.indexOf(languageCode) > -1) {
-    return languageCode;
-  }
-  return null;
+  return language;
 }
 
 MapboxLanguage.prototype.onAdd = function (map) {
