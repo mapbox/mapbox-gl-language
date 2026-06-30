@@ -165,5 +165,40 @@ test('MapboxLanguage', (t) => {
     t.end();
   });
 
+  test('longer locales', (t) => {
+    const language = new MapboxLanguage();
+    const layers = [{
+      'id': 'state-label-sm',
+      'source': 'composite',
+      'source-layer': 'state_label',
+      'layout': {
+        'text-letter-spacing': 0.15,
+        'text-field': ['get', 'name']
+      }
+    }];
+    const style = makeStyle(layers);
+
+    const enStyle = language.setLanguage(style, 'en-US');
+    t.deepEqual(enStyle.layers[0].layout, {
+      'text-letter-spacing': 0.15,
+      'text-field': [
+        'coalesce',
+        ['get', 'name_en'],
+        ['get', 'name']
+      ]
+    }, 'shorter locale name');
+
+    const zhStyle = language.setLanguage(style, 'zh-HK');
+    t.deepEqual(zhStyle.layers[0].layout, {
+      'text-letter-spacing': 0.15,
+      'text-field': [
+        'coalesce',
+        ['get', 'name_zh-Hant'],
+        ['get', 'name']
+      ]
+    }, 'zh hans/hant name');
+    t.end();
+  });
+
   t.end();
 });
